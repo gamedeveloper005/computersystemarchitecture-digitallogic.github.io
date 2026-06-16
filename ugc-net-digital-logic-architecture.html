@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Architecture &amp; Digital Logic — UGC NET JRF Reference Set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:#15223C;
+  --bg-grid:rgba(146,175,222,0.055);
+  --bg-grid-major:rgba(146,175,222,0.09);
+  --surface:#1E3158;
+  --surface-2:#27406F;
+  --surface-3:#2F4A7E;
+  --ink:#E8EEF8;
+  --ink-dim:#9FB2D4;
+  --ink-faint:#6F84AC;
+  --accent:#F2A93B;
+  --accent-soft:rgba(242,169,59,0.14);
+  --accent-2:#5FE3C8;
+  --accent-2-soft:rgba(95,227,200,0.12);
+  --flag:#FF7A66;
+  --flag-soft:rgba(255,122,102,0.12);
+  --line:#3C5689;
+  --line-soft:#2C4270;
+  --radius:3px;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --content-max:760px;
+  --sidebar-w:280px;
+  --topbar-h:60px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-body);
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(var(--bg-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-major) 1px, transparent 1px);
+  background-size:16px 16px, 16px 16px, 80px 80px, 80px 80px;
+  color:var(--ink);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:600;
+  line-height:1.25;
+  letter-spacing:0.01em;
+  color:var(--ink);
+  margin:0 0 0.5em 0;
+}
+p{margin:0 0 1em 0;}
+p:last-child{margin-bottom:0;}
+a{color:var(--accent-2);text-decoration:none;}
+a:hover{text-decoration:underline;}
+strong{color:var(--ink);font-weight:600;}
+small{color:var(--ink-dim);}
+
+::selection{background:var(--accent-soft);color:var(--ink);}
+
+/* Focus visibility */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+  outline:2px solid var(--accent-2);
+  outline-offset:2px;
+  border-radius:var(--radius);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important; animation:none !important;}
+}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ---------- TOP BAR ---------- */
+.topbar{
+  position:fixed;
+  top:0; left:0; right:0;
+  height:var(--topbar-h);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 18px;
+  background:var(--bg);
+  border-bottom:1px solid var(--line-soft);
+  z-index:50;
+}
+.topbar .menu-btn{
+  display:none;
+  width:38px; height:38px;
+  align-items:center; justify-content:center;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  color:var(--ink);
+  cursor:pointer;
+}
+.topbar .menu-btn svg{width:18px;height:18px;}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-mono);
+}
+.brand .mark{
+  width:34px;height:34px;
+  border:1px solid var(--accent);
+  border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);
+  font-weight:700;
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:0.02em;
+  flex-shrink:0;
+}
+.brand .text{display:flex;flex-direction:column;line-height:1.2;}
+.brand .text .title{
+  font-family:var(--font-display);
+  font-size:15px;
+  font-weight:600;
+  color:var(--ink);
+}
+.brand .text .sub{
+  font-size:11px;
+  color:var(--ink-faint);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.topbar-right{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.status-pill{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.06em;
+  color:var(--ink-dim);
+  text-transform:uppercase;
+  padding:6px 10px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+}
+.status-pill .led{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent-2);
+  box-shadow:0 0 6px var(--accent-2);
+}
+@media (max-width:980px){
+  .status-pill{display:none;}
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar{
+  position:fixed;
+  top:var(--topbar-h);
+  left:0;
+  width:var(--sidebar-w);
+  height:calc(100vh - var(--topbar-h));
+  overflow-y:auto;
+  background:var(--bg);
+  border-right:1px solid var(--line-soft);
+  padding:18px 0 40px;
+  z-index:40;
+}
+.sidebar::-webkit-scrollbar{width:8px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--surface-2);border-radius:4px;}
+
+.index-head{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.18em;
+  color:var(--ink-faint);
+  padding:0 20px 10px;
+  text-transform:uppercase;
+}
+.nav-group-label{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  color:var(--accent-2);
+  text-transform:uppercase;
+  padding:18px 20px 8px;
+}
+.nav-group-label:first-of-type{padding-top:6px;}
+
+.nav-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 20px;
+  color:var(--ink-dim);
+  text-decoration:none;
+  font-size:13.5px;
+  border-left:2px solid transparent;
+  cursor:pointer;
+}
+.nav-link:hover{
+  background:var(--surface);
+  color:var(--ink);
+}
+.nav-link.active{
+  background:var(--surface);
+  color:var(--ink);
+  border-left:2px solid var(--accent);
+}
+.nav-link .nlabel{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--ink-faint);
+  flex-shrink:0;
+  width:34px;
+}
+.nav-link.active .nlabel{color:var(--accent);}
+.nav-link .ntxt{flex:1;}
+.nav-check{
+  width:14px;height:14px;
+  border:1px solid var(--line);
+  border-radius:2px;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+}
+.nav-check svg{width:10px;height:10px;opacity:0;}
+.nav-check.done{
+  background:var(--accent-2-soft);
+  border-color:var(--accent-2);
+}
+.nav-check.done svg{opacity:1;stroke:var(--accent-2);}
+
+/* ---------- MAIN CONTENT ---------- */
+.content{
+  margin-left:var(--sidebar-w);
+  margin-top:var(--topbar-h);
+  flex:1;
+  padding:36px 28px 100px;
+  min-width:0;
+}
+.sheet{display:none; max-width:var(--content-max); margin:0 auto;}
+.sheet.active{display:block;}
+
+@media (max-width:980px){
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform 0.22s ease;
+    box-shadow:0 0 40px rgba(0,0,0,0.4);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .content{margin-left:0;padding:28px 18px 90px;}
+  .topbar .menu-btn{display:flex;}
+  .sidebar-backdrop{
+    position:fixed;inset:0;
+    background:rgba(8,14,28,0.55);
+    z-index:35;
+    display:none;
+  }
+  .sidebar-backdrop.show{display:block;}
+}
+
+/* ============================================================
+   TITLE BLOCK  (signature element — engineering drawing header)
+   ============================================================ */
+.title-block{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:16px 18px;
+  margin-bottom:26px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px 18px;
+  align-items:start;
+}
+.title-block .tb-meta{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.12em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+  margin-bottom:6px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.title-block .tb-meta .sheet-no{color:var(--accent);}
+.title-block h2{
+  font-size:24px;
+  grid-column:1;
+}
+.title-block .freq{
+  grid-column:2;
+  grid-row:1 / span 2;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+  justify-self:end;
+}
+.title-block .freq .freq-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.14em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+}
+.title-block .freq .dots{display:flex;gap:4px;}
+.freq-dot{
+  width:9px;height:9px;
+  border:1px solid var(--line);
+  border-radius:2px;
+}
+.freq-dot.on{background:var(--accent);border-color:var(--accent);}
+.title-block .tb-desc{
+  grid-column:1 / -1;
+  color:var(--ink-dim);
+  font-size:14.5px;
+  margin:0;
+}
+@media (max-width:560px){
+  .title-block{grid-template-columns:1fr;}
+  .title-block .freq{grid-column:1;grid-row:auto;align-items:flex-start;justify-self:start;}
+}
+
+/* ============================================================
+   CONTENT BLOCKS
+   ============================================================ */
+.block{margin:0 0 28px;}
+.block h3{
+  font-size:17px;
+  color:var(--ink);
+  border-bottom:1px solid var(--line-soft);
+  padding-bottom:8px;
+  margin-bottom:14px;
+}
+.block h4{
+  font-size:14px;
+  color:var(--accent-2);
+  margin-top:18px;
+  margin-bottom:8px;
+  font-family:var(--font-mono);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-weight:600;
+}
+.block p, .block li{
+  font-size:14.5px;
+  color:var(--ink-dim);
+}
+.block ul, .block ol{padding-left:22px;margin:0 0 1em;}
+.block li{margin-bottom:6px;}
+.block li::marker{color:var(--accent-2);}
+.lede{
+  font-size:15.5px;
+  color:var(--ink);
+}
+
+/* Inline binary / hex / register chips */
+.bits, code{
+  font-family:var(--font-mono);
+  font-size:0.92em;
+  background:var(--surface-2);
+  border:1px solid var(--line-soft);
+  border-radius:2px;
+  padding:1px 6px;
+  color:var(--accent-2);
+  white-space:nowrap;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap{overflow-x:auto;margin-bottom:14px;border:1px solid var(--line);border-radius:var(--radius);}
+table.data{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13.5px;
+  font-family:var(--font-mono);
+  min-width:420px;
+}
+table.data th, table.data td{
+  border-bottom:1px solid var(--line-soft);
+  border-right:1px solid var(--line-soft);
+  padding:8px 12px;
+  text-align:left;
+  white-space:nowrap;
+}
+table.data th:last-child, table.data td:last-child{border-right:none;}
+table.data tr:last-child td{border-bottom:none;}
+table.data thead th{
+  background:var(--surface-2);
+  color:var(--accent-2);
+  font-weight:600;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-size:11px;
+}
+table.data tbody tr:nth-child(even){background:rgba(255,255,255,0.018);}
+table.data td.wrap, table.data th.wrap{white-space:normal;font-family:var(--font-body);}
+table.data td.num, table.data th.num{text-align:center;}
+
+/* ============================================================
+   CALLOUTS
+   ============================================================ */
+.callout{
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:var(--radius);
+  background:var(--accent-soft);
+  padding:12px 16px;
+  margin:16px 0;
+  position:relative;
+}
+.callout .c-label{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+  font-weight:700;
+  margin-bottom:6px;
+  display:block;
+}
+.callout p, .callout li{color:var(--ink);font-size:13.5px;}
+.callout--trap{border-left-color:var(--flag);background:var(--flag-soft);}
+.callout--trap .c-label{color:var(--flag);}
+.callout--formula{border-left-color:var(--accent-2);background:var(--accent-2-soft);}
+.callout--formula .c-label{color:var(--accent-2);}
+.callout--formula .formula{
+  font-family:var(--font-mono);
+  font-size:15px;
+  color:var(--ink);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:2px;
+  padding:8px 12px;
+  margin:8px 0;
+  display:inline-block;
+}
+
+/* ============================================================
+   SHEET NAV (prev/next)
+   ============================================================ */
+.sheet-nav{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:36px;
+  padding-top:18px;
+  border-top:1px solid var(--line-soft);
+}
+.sheet-nav button{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:0.06em;
+  background:var(--surface);
+  border:1px solid var(--line);
+  color:var(--ink-dim);
+  border-radius:var(--radius);
+  padding:10px 14px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  max-width:48%;
+}
+.sheet-nav button:hover{border-color:var(--accent-2);color:var(--ink);}
+.sheet-nav button .dir{color:var(--ink-faint);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;}
+.sheet-nav button.next-btn{align-items:flex-end;text-align:right;margin-left:auto;}
+.sheet-nav button:disabled{opacity:0.3;cursor:default;}
+
+/* ============================================================
+   HOME PAGE
+   ============================================================ */
+.hero{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:30px 26px;
+  margin-bottom:30px;
+}
+.hero .eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.2em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.hero h1{font-size:30px;margin-bottom:10px;}
+.hero p{color:var(--ink-dim);font-size:15px;max-width:580px;}
+.progress-row{
+  display:flex;align-items:center;gap:12px;margin-top:18px;
+}
+.progress-bar{
+  flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;border:1px solid var(--line);
+}
+.progress-bar-fill{height:100%;background:var(--accent-2);width:0%;transition:width 0.3s ease;}
+.progress-text{
+  font-family:var(--font-mono);font-size:12px;color:var(--ink-dim);white-space:nowrap;
+}
+
+.map-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-bottom:30px;
+}
+@media (max-width:640px){.map-grid{grid-template-columns:1fr;}}
+.map-card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:16px 18px;
+}
+.map-card h3{
+  font-size:13px;
+  font-family:var(--font-mono);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--accent-2);
+  border:none;padding:0;margin-bottom:10px;
+}
+.map-card ul{list-style:none;padding:0;margin:0;}
+.map-card li{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 0;
+  font-size:13.5px;
+  color:var(--ink-dim);
+  border-bottom:1px dashed var(--line-soft);
+  cursor:pointer;
+}
+.map-card li:last-child{border-bottom:none;}
+.map-card li:hover{color:var(--ink);}
+.map-card li .nlabel{
+  font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);width:32px;flex-shrink:0;
+}
+.map-card li:hover .nlabel{color:var(--accent);}
+
+.howto{
+  border:1px dashed var(--line);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  background:transparent;
+}
+.howto h3{font-size:14px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-dim);border:none;padding:0;margin-bottom:10px;}
+.howto ol{margin:0;padding-left:20px;}
+.howto li{color:var(--ink-dim);font-size:13.5px;margin-bottom:8px;}
+
+/* ============================================================
+   REFERENCE SHEET — FORMULA CARDS
+   ============================================================ */
+.ref-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+@media (max-width:640px){.ref-grid{grid-template-columns:1fr;}}
+.ref-card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--surface);
+  padding:12px 14px;
+}
+.ref-card .rc-tag{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+.ref-card .rc-title{
+  font-family:var(--font-display);
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+.ref-card .rc-formula{
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  color:var(--accent-2);
+  line-height:1.7;
+  background:var(--surface-2);
+  border:1px solid var(--line-soft);
+  border-radius:2px;
+  padding:6px 8px;
+  margin-bottom:6px;
+}
+.ref-card .rc-note{
+  font-size:12px;
+  color:var(--ink-dim);
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.quiz-header h2{margin:0;font-size:22px;}
+.quiz-counter{font-family:var(--font-mono);font-size:12px;color:var(--ink-dim);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 12px;white-space:nowrap;}
+.quiz-progress{height:4px;background:var(--surface-2);border-radius:2px;margin-bottom:26px;overflow:hidden;}
+.quiz-progress-fill{height:100%;background:var(--accent-2);transition:width 0.35s ease;}
+.quiz-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:22px 22px 18px;margin-bottom:18px;}
+.quiz-card .q-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px;}
+.quiz-card .q-text{font-size:16px;color:var(--ink);font-weight:500;line-height:1.5;margin-bottom:20px;font-family:var(--font-display);}
+.quiz-options{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius);background:transparent;color:var(--ink-dim);cursor:pointer;text-align:left;font-size:13.5px;font-family:var(--font-body);}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent-2);background:var(--accent-2-soft);color:var(--ink);}
+.quiz-opt .opt-key{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--accent);width:18px;flex-shrink:0;margin-top:1px;}
+.quiz-opt:disabled{cursor:default;}
+.quiz-opt.correct{border-color:var(--accent-2);background:var(--accent-2-soft);color:var(--ink);}
+.quiz-opt.correct .opt-key{color:var(--accent-2);}
+.quiz-opt.wrong{border-color:var(--flag);background:var(--flag-soft);color:var(--ink);}
+.quiz-opt.wrong .opt-key{color:var(--flag);}
+.quiz-explanation{margin-top:14px;padding:12px 14px;border:1px solid var(--line-soft);border-left:3px solid var(--accent-2);background:var(--accent-2-soft);border-radius:var(--radius);font-size:13.5px;color:var(--ink);display:none;}
+.quiz-explanation.show{display:block;}
+.quiz-explanation strong{color:var(--accent-2);}
+.quiz-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.btn{font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;padding:10px 18px;border-radius:var(--radius);border:1px solid var(--line);cursor:pointer;background:var(--surface);color:var(--ink-dim);}
+.btn:hover{border-color:var(--accent-2);color:var(--ink);}
+.btn-primary{background:var(--accent-2);color:#0D1C35;border-color:var(--accent-2);font-weight:700;}
+.btn-primary:hover{background:#4CD4B8;border-color:#4CD4B8;color:#0D1C35;}
+.quiz-score-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:34px 28px;text-align:center;display:none;}
+.quiz-score-card.show{display:block;}
+.score-ring{width:100px;height:100px;border-radius:50%;border:3px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--accent-2);background:var(--surface-2);}
+.quiz-score-card h3{font-size:20px;margin-bottom:6px;}
+.quiz-score-card p{color:var(--ink-dim);font-size:14.5px;margin-bottom:20px;}
+.score-breakdown{display:flex;gap:18px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;}
+.score-item{font-family:var(--font-mono);font-size:12px;display:flex;flex-direction:column;gap:4px;align-items:center;}
+.score-item .si-val{font-size:20px;font-weight:700;color:var(--ink);}
+.score-item.correct .si-val{color:var(--accent-2);}
+.score-item.wrong .si-val{color:var(--flag);}
+.score-item .si-label{color:var(--ink-faint);letter-spacing:0.1em;text-transform:uppercase;font-size:10px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="brand">
+      <div class="mark">DL/CA</div>
+      <div class="text">
+        <span class="title">Architecture &amp; Digital Logic</span>
+        <span class="sub">UGC NET JRF · Computer Science</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="status-pill"><span class="led"></span> 16 Sheets · 1 Reference</div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-backdrop" id="backdrop"></div>
+  <nav class="sidebar" id="sidebar">
+    <div class="index-head">Drawing Index</div>
+
+    <a class="nav-link" data-target="home"><span class="nlabel">00</span><span class="ntxt">Home / How to use</span></a>
+
+    <div class="nav-group-label">Digital Logic</div>
+    <a class="nav-link" data-target="dl-01"><span class="nlabel">DL·01</span><span class="ntxt">Number Systems &amp; Representation</span><span class="nav-check" data-check="dl-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="dl-02"><span class="nlabel">DL·02</span><span class="ntxt">Boolean Algebra &amp; Logic Gates</span><span class="nav-check" data-check="dl-02"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="dl-03"><span class="nlabel">DL·03</span><span class="ntxt">K-Maps &amp; Minimization</span><span class="nav-check" data-check="dl-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="dl-04"><span class="nlabel">DL·04</span><span class="ntxt">Combinational Circuits</span><span class="nav-check" data-check="dl-04"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="dl-05"><span class="nlabel">DL·05</span><span class="ntxt">Sequential Circuits</span><span class="nav-check" data-check="dl-05"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="dl-06"><span class="nlabel">DL·06</span><span class="ntxt">Registers &amp; Counters</span><span class="nav-check" data-check="dl-06"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="dl-07"><span class="nlabel">DL·07</span><span class="ntxt">Computer Arithmetic</span><span class="nav-check" data-check="dl-07"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+
+    <div class="nav-group-label">Computer Architecture</div>
+    <a class="nav-link" data-target="ca-08"><span class="nlabel">CA·08</span><span class="ntxt">CPU Organization</span><span class="nav-check" data-check="ca-08"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-09"><span class="nlabel">CA·09</span><span class="ntxt">Instruction Formats &amp; Addressing</span><span class="nav-check" data-check="ca-09"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-10"><span class="nlabel">CA·10</span><span class="ntxt">Control Unit Design</span><span class="nav-check" data-check="ca-10"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-11"><span class="nlabel">CA·11</span><span class="ntxt">Memory Hierarchy &amp; Cache</span><span class="nav-check" data-check="ca-11"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-12"><span class="nlabel">CA·12</span><span class="ntxt">Virtual Memory</span><span class="nav-check" data-check="ca-12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-13"><span class="nlabel">CA·13</span><span class="ntxt">I/O Organization</span><span class="nav-check" data-check="ca-13"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-14"><span class="nlabel">CA·14</span><span class="ntxt">Pipelining &amp; Hazards</span><span class="nav-check" data-check="ca-14"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-15"><span class="nlabel">CA·15</span><span class="ntxt">RISC vs CISC</span><span class="nav-check" data-check="ca-15"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+    <a class="nav-link" data-target="ca-16"><span class="nlabel">CA·16</span><span class="ntxt">Parallel Processing</span><span class="nav-check" data-check="ca-16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></a>
+
+    <div class="nav-group-label">Reference</div>
+    <a class="nav-link" data-target="ref-17"><span class="nlabel">REF</span><span class="ntxt">Formula &amp; Fact Sheet</span></a>
+    <a class="nav-link" data-target="quiz"><span class="nlabel">QUIZ</span><span class="ntxt">Practice Questions</span></a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="content" id="content">
+
+    <!-- ============================================================ HOME ============================================================ -->
+    <section class="sheet active" id="home">
+      <div class="hero">
+        <div class="eyebrow">Reference Set · 17 Sheets</div>
+        <h1>Computer Architecture &amp; Digital Logic</h1>
+        <p>A condensed, exam-facing reference for the UGC NET JRF Computer Science &amp; Applications syllabus. Every sheet is built around what actually gets asked: definitions you must recognise instantly, formulas you must be able to apply under time pressure, and the traps that examiners reuse year after year.</p>
+        <div class="progress-row">
+          <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+          <div class="progress-text" id="progressText">0 / 16 sheets reviewed</div>
+        </div>
+      </div>
+
+      <div class="map-grid">
+        <div class="map-card">
+          <h3>Digital Logic — DL·01–07</h3>
+          <ul>
+            <li data-target="dl-01"><span class="nlabel">01</span> Number Systems &amp; Representation</li>
+            <li data-target="dl-02"><span class="nlabel">02</span> Boolean Algebra &amp; Logic Gates</li>
+            <li data-target="dl-03"><span class="nlabel">03</span> K-Maps &amp; Minimization</li>
+            <li data-target="dl-04"><span class="nlabel">04</span> Combinational Circuits</li>
+            <li data-target="dl-05"><span class="nlabel">05</span> Sequential Circuits</li>
+            <li data-target="dl-06"><span class="nlabel">06</span> Registers &amp; Counters</li>
+            <li data-target="dl-07"><span class="nlabel">07</span> Computer Arithmetic</li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>Computer Architecture — CA·08–16</h3>
+          <ul>
+            <li data-target="ca-08"><span class="nlabel">08</span> CPU Organization</li>
+            <li data-target="ca-09"><span class="nlabel">09</span> Instruction Formats &amp; Addressing</li>
+            <li data-target="ca-10"><span class="nlabel">10</span> Control Unit Design</li>
+            <li data-target="ca-11"><span class="nlabel">11</span> Memory Hierarchy &amp; Cache</li>
+            <li data-target="ca-12"><span class="nlabel">12</span> Virtual Memory</li>
+            <li data-target="ca-13"><span class="nlabel">13</span> I/O Organization</li>
+            <li data-target="ca-14"><span class="nlabel">14</span> Pipelining &amp; Hazards</li>
+            <li data-target="ca-15"><span class="nlabel">15</span> RISC vs CISC</li>
+            <li data-target="ca-16"><span class="nlabel">16</span> Parallel Processing</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="howto">
+        <h3>How this set is organised</h3>
+        <ol>
+          <li>Each sheet opens with a <strong>title block</strong> showing its position in the syllabus and a <strong>frequency rating</strong> (4 filled marks = appears almost every year; fewer = appears occasionally but still worth knowing).</li>
+          <li>Amber boxes are <strong>Exam Focus</strong> — the exact fact pattern a question is likely to test. Teal boxes are <strong>Key Formulas</strong> — memorise these cold. Coral boxes are <strong>Common Traps</strong> — where most marks are lost.</li>
+          <li>Tick the box next to a sheet in the index once you've revised it — your progress is saved on this device. Sheet <strong>REF</strong> at the end compresses every formula on this site onto one page for final revision.</li>
+          <li>Recommended order: DL·01 → DL·07 to build the digital-logic base, then CA·08 → CA·16 for organization and architecture. Revisit REF the night before the exam.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================ DL-01 NUMBER SYSTEMS ============================================================ -->
+    <section class="sheet" id="dl-01">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 01 / 16</span><span>Digital Logic</span></div>
+        <h2>Number Systems &amp; Representation</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">How signed integers, decimals and fractions are stored in fixed-width registers — the basis for arithmetic, overflow, and floating-point questions.</p>
+      </div>
+
+      <div class="block">
+        <p class="lede">Conversions between binary, octal, decimal and hexadecimal are assumed knowledge — NET rarely tests these directly. What it tests is <strong>how negative numbers and fractions are represented</strong>, because that's where the subtle, examiner-favourite traps live.</p>
+      </div>
+
+      <div class="block">
+        <h3>Signed Representation Schemes</h3>
+        <p>For an <code>n</code>-bit word, three classical schemes exist. The differences between their ranges and zero-handling are asked constantly.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Scheme</th><th class="wrap">Negative form</th><th class="num">Range (n bits)</th><th class="num">Zeros</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Sign-magnitude</td><td class="wrap">MSB = sign flag, rest = magnitude</td><td class="num">−(2ⁿ⁻¹−1) to +(2ⁿ⁻¹−1)</td><td class="num">2 (+0, −0)</td></tr>
+              <tr><td class="wrap">1's complement</td><td class="wrap">Flip every bit</td><td class="num">−(2ⁿ⁻¹−1) to +(2ⁿ⁻¹−1)</td><td class="num">2 (+0, −0)</td></tr>
+              <tr><td class="wrap">2's complement</td><td class="wrap">Flip every bit, then add 1</td><td class="num">−2ⁿ⁻¹ to +(2ⁿ⁻¹−1)</td><td class="num">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Worked example — represent −15 in 8-bit 2's complement</h4>
+        <p>
+          15 = <span class="bits">00001111</span> &nbsp;→ invert every bit (1's complement) → <span class="bits">11110000</span> &nbsp;→ add 1 → <span class="bits">11110001</span>
+        </p>
+        <p>So −15 is stored as <span class="bits">11110001</span>. Verify by decoding it the same way: invert → <span class="bits">00001110</span>, add 1 → <span class="bits">00001111</span> = 15, with the original sign bit confirming it's negative.</p>
+
+        <div class="callout callout--trap">
+          <span class="c-label">Common Trap — the asymmetric range</span>
+          <p>For 8-bit 2's complement the range is −128 to +127 — <strong>not symmetric</strong>. The pattern <span class="bits">10000000</span> represents −128, which has no positive counterpart. Negating −128 (invert + 1) returns <span class="bits">10000000</span> again — this is the textbook 2's-complement overflow case examiners love to ask about.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>BCD &amp; Related Codes</h3>
+        <p><strong>BCD (8421 code):</strong> each decimal digit is stored in its own 4-bit binary field, <span class="bits">0000</span>–<span class="bits">1001</span> for 0–9. The patterns <span class="bits">1010</span>–<span class="bits">1111</span> are invalid in pure BCD.</p>
+        <p><strong>Excess-3:</strong> add 3 to the decimal digit before converting to binary. This makes the code <em>self-complementing</em> — the 9's complement of a digit is obtained by simply inverting every bit, which simplifies BCD subtraction circuits. This "why is Excess-3 self-complementing" angle is a recurring question.</p>
+        <p><strong>Gray code:</strong> successive values differ in exactly one bit. Used to avoid glitches in counters/ADCs and forms the cell-ordering rule for Karnaugh maps (see DL·03).</p>
+      </div>
+
+      <div class="block">
+        <h3>IEEE-754 Floating Point</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Format</th><th class="num">Total bits</th><th class="num">Sign</th><th class="num">Exponent</th><th class="num">Mantissa</th><th class="num">Bias</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Single precision</td><td class="num">32</td><td class="num">1</td><td class="num">8</td><td class="num">23</td><td class="num">127</td></tr>
+              <tr><td class="wrap">Double precision</td><td class="num">64</td><td class="num">1</td><td class="num">11</td><td class="num">52</td><td class="num">1023</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula</span>
+          <div class="formula">bias = 2^(k − 1) − 1, &nbsp; where k = number of exponent bits</div>
+          <p>This is how 127 (k=8) and 1023 (k=11) are derived — if a question changes the exponent width, re-derive the bias from this formula rather than recalling a memorised number.</p>
+        </div>
+
+        <h4>Worked example — encode 10.5 (single precision)</h4>
+        <p>10.5 in binary = <span class="bits">1010.1</span> → normalise → 1.0101 × 2³</p>
+        <p>Sign = 0 (positive) &nbsp;|&nbsp; Exponent = 3 + 127 = 130 = <span class="bits">10000010</span> &nbsp;|&nbsp; Mantissa = <span class="bits">01010000000000000000000</span> (the digits after the leading 1, padded to 23 bits)</p>
+        <p>Full 32-bit pattern: <span class="bits">0 10000010 01010000000000000000000</span></p>
+
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>Know the special-case exponent patterns: <strong>all-zero exponent</strong> → the number is zero or denormalised (mantissa gives the value); <strong>all-one exponent</strong> → infinity (mantissa = 0) or NaN (mantissa ≠ 0). "What does this bit pattern represent?" questions hinge entirely on these two cases.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ DL-02 BOOLEAN ALGEBRA ============================================================ -->
+    <section class="sheet" id="dl-02">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 02 / 16</span><span>Digital Logic</span></div>
+        <h2>Boolean Algebra &amp; Logic Gates</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">The algebra and gate behaviours that every later circuit-design question is built from.</p>
+      </div>
+
+      <div class="block">
+        <h3>Laws &amp; Theorems</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Law</th><th class="wrap">OR form</th><th class="wrap">AND form</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Identity</td><td class="wrap">A + 0 = A</td><td class="wrap">A · 1 = A</td></tr>
+              <tr><td class="wrap">Null / Dominance</td><td class="wrap">A + 1 = 1</td><td class="wrap">A · 0 = 0</td></tr>
+              <tr><td class="wrap">Idempotent</td><td class="wrap">A + A = A</td><td class="wrap">A · A = A</td></tr>
+              <tr><td class="wrap">Complement</td><td class="wrap">A + A' = 1</td><td class="wrap">A · A' = 0</td></tr>
+              <tr><td class="wrap">Commutative</td><td class="wrap">A + B = B + A</td><td class="wrap">AB = BA</td></tr>
+              <tr><td class="wrap">Associative</td><td class="wrap">(A+B)+C = A+(B+C)</td><td class="wrap">(AB)C = A(BC)</td></tr>
+              <tr><td class="wrap">Distributive</td><td class="wrap">A+(BC) = (A+B)(A+C)</td><td class="wrap">A(B+C) = AB+AC</td></tr>
+              <tr><td class="wrap">Absorption</td><td class="wrap">A + AB = A</td><td class="wrap">A(A+B) = A</td></tr>
+              <tr><td class="wrap">De Morgan's</td><td class="wrap">(A+B)' = A'·B'</td><td class="wrap">(A·B)' = A'+B'</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p><strong>De Morgan's theorem</strong> is the single most-used simplification tool in NET — it's how "implement using only NOR gates" or "convert this AND-OR expression to NAND-only" questions are solved. A useful extra identity worth remembering: <code>A + A'B = A + B</code>.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Logic Gate Truth Table</h3>
+        <p>One table, every 2-input gate. Memorise this as a single block — most truth-table and "identify the gate from its output" questions reduce to reading this table.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="num">A</th><th class="num">B</th><th class="num">AND</th><th class="num">OR</th><th class="num">NAND</th><th class="num">NOR</th><th class="num">XOR</th><th class="num">XNOR</th></tr></thead>
+            <tbody>
+              <tr><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
+              <tr><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">0</td></tr>
+              <tr><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">0</td></tr>
+              <tr><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>NOT:</strong> single input, output is the inverse (0→1, 1→0). Quick recall: <strong>XOR</strong> = output 1 when inputs <em>differ</em>; <strong>XNOR</strong> = output 1 when inputs are the <em>same</em>.</p>
+      </div>
+
+      <div class="block">
+        <h3>Universal Gates</h3>
+        <p>NAND and NOR are each <strong>universal</strong> — every other gate can be built from either one alone. For NAND:</p>
+        <ul>
+          <li><strong>NOT</strong> — tie both inputs together: A NAND A = A'. (1 gate)</li>
+          <li><strong>AND</strong> — a NAND followed by a NAND-as-NOT: (A NAND B)' = AB. (2 gates)</li>
+          <li><strong>OR</strong> — invert A and B first (2 gates), then NAND the results: by De Morgan's, (A'·B')' = A+B. (3 gates total)</li>
+        </ul>
+        <p>NOR works symmetrically (NOR-as-NOT, then NOR-NOR for OR, then invert for AND). Expect "minimum gates required" questions built directly on these constructions — we'll draw the actual circuits on DL·04.</p>
+      </div>
+
+      <div class="block">
+        <h3>Canonical Forms</h3>
+        <p>A <strong>minterm</strong> is a product term containing every variable (true or complemented) that equals 1 for exactly one input row; a <strong>maxterm</strong> is its dual for sums, equalling 0 for exactly one row.</p>
+        <ul>
+          <li><strong>SOP</strong> (Sum of Products) — OR of minterms where the function output is 1, written as Σ(minterms).</li>
+          <li><strong>POS</strong> (Product of Sums) — AND of maxterms where the function output is 0, written as Π(maxterms).</li>
+        </ul>
+        <p>K-maps (DL·03) exist purely to turn these long canonical forms into a minimal SOP or POS expression.</p>
+
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula</span>
+          <div class="formula">Number of distinct Boolean functions of n variables = 2^(2ⁿ)</div>
+          <p>For n=2 → 16 functions; for n=3 → 256 functions. This exact phrasing — "how many Boolean functions of n variables exist" — appears almost every cycle.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ DL-03 K-MAPS ============================================================ -->
+    <section class="sheet" id="dl-03">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 03 / 16</span><span>Digital Logic</span></div>
+        <h2>Karnaugh Maps &amp; Minimization</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">A grid-based shortcut for turning a long canonical SOP/POS expression into its minimal form.</p>
+      </div>
+
+      <div class="block">
+        <h3>Cell Adjacency &amp; Layout</h3>
+        <p class="lede">A K-map places one cell per minterm so that <strong>physically adjacent cells differ in exactly one variable</strong> — which is why row/column headers run in <strong>Gray code</strong> order (00, 01, 11, 10), not binary order (00, 01, 10, 11). The map also wraps top-to-bottom and left-to-right: the first and last row/column — and all four corners — are mutually adjacent.</p>
+      </div>
+
+      <div class="block">
+        <h3>Worked Example — 4-variable map with don't-cares</h3>
+        <p>F(A,B,C,D) = Σm(1,3,5,7,9) + d(11,13,15) — required minterms are plotted as 1; don't-cares (X) may be read as 0 or 1, whichever minimizes better.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>AB \ CD</th><th class="num">00</th><th class="num">01</th><th class="num">11</th><th class="num">10</th></tr></thead>
+            <tbody>
+              <tr><td>00</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+              <tr><td>01</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+              <tr><td>11</td><td class="num">0</td><td class="num">X</td><td class="num">X</td><td class="num">0</td></tr>
+              <tr><td>10</td><td class="num">0</td><td class="num">1</td><td class="num">X</td><td class="num">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The two middle columns (CD=01 and CD=11) are entirely 1s and X's — an octet (group of 8) where the only variable that stays constant across all eight cells is <strong>D=1</strong>. Reading the don't-cares as 1 lets this octet form, collapsing the function to <strong>F = D</strong>. Without the don't-cares you'd be left with smaller groups and a longer expression — exactly why don't-cares matter.</p>
+      </div>
+
+      <div class="block">
+        <h3>Grouping Rules</h3>
+        <ul>
+          <li>Groups must contain exactly <strong>2ᵏ cells</strong> (1, 2, 4, 8, 16…) — never 3, 5, 6, or 7.</li>
+          <li>A group of 2ᵏ cells eliminates <strong>k variables</strong> from the term — bigger groups give shorter terms.</li>
+          <li>Groups can wrap around any edge of the map.</li>
+          <li>Every required 1 must be covered by at least one group; overlapping groups are allowed and often necessary.</li>
+          <li>Aim for the <strong>minimum number of largest possible groups</strong> that cover every 1.</li>
+        </ul>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>A <strong>prime implicant</strong> is a group that cannot be enlarged further. An <strong>essential prime implicant</strong> covers at least one minterm that no other prime implicant covers — it <em>must</em> appear in the final expression. "How many essential prime implicants does this function have?" is a recurring question type.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>SOP vs POS Minimization</h3>
+        <p><strong>SOP (group the 1s):</strong> each group becomes a product (AND) term containing only the variables that stay constant across the group — uncomplemented if the variable is 1 throughout the group, complemented if it's 0. The minimized expression is the OR of these terms.</p>
+        <p><strong>POS (group the 0s):</strong> the dual process — group the 0-cells the same way, but each group becomes a sum (OR) term where a variable that is 1 throughout the group appears complemented, and one that is 0 appears uncomplemented. The minimized expression is the AND of these sum terms.</p>
+        <div class="callout callout--trap">
+          <span class="c-label">Common Trap</span>
+          <p>Corner cells of a K-map are adjacent to each other (the map wraps like a torus). Forgetting wrap-around groupings is the single most common reason a "minimized" SOP/POS still matches a non-minimal distractor option.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ DL-04 COMBINATIONAL CIRCUITS ============================================================ -->
+    <section class="sheet" id="dl-04">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 04 / 16</span><span>Digital Logic</span></div>
+        <h2>Combinational Circuits</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">Circuits whose output depends only on present inputs — adders, multiplexers, decoders, comparators.</p>
+      </div>
+
+      <div class="block">
+        <h3>Adders &amp; Subtractors</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Circuit</th><th class="wrap">Inputs</th><th class="wrap">Output equations</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Half Adder</td><td class="wrap">A, B</td><td class="wrap">Sum = A⊕B &nbsp;|&nbsp; Carry = AB</td></tr>
+              <tr><td class="wrap">Full Adder</td><td class="wrap">A, B, Cin</td><td class="wrap">Sum = A⊕B⊕Cin &nbsp;|&nbsp; Cout = AB + B·Cin + A·Cin</td></tr>
+              <tr><td class="wrap">Half Subtractor</td><td class="wrap">A, B</td><td class="wrap">Diff = A⊕B &nbsp;|&nbsp; Borrow = A'B</td></tr>
+              <tr><td class="wrap">Full Subtractor</td><td class="wrap">A, B, Bin</td><td class="wrap">Diff = A⊕B⊕Bin &nbsp;|&nbsp; Bout = A'B + A'·Bin + B·Bin</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A full adder is two half adders plus an OR gate. Chaining n full adders (ripple-carry) builds an n-bit adder — the cumulative carry-propagation delay (= n × per-stage delay) is itself a common numerical question.</p>
+      </div>
+
+      <div class="block">
+        <h3>Multiplexers &amp; Demultiplexers</h3>
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula</span>
+          <div class="formula">A MUX with n select lines has 2ⁿ data inputs and 1 output</div>
+          <p>Demultiplexers mirror this: 1 input, n select lines, 2ⁿ outputs. So a 4:1 MUX needs 2 select lines; an 8:1 MUX needs 3.</p>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>A <strong>2ⁿ:1 MUX can implement any n-variable Boolean function</strong>: tie the n variables to the select lines, and set each data input D₀…D₂ⁿ₋₁ to the function's truth-table output for that combination. "Implement F(A,B,C) using a MUX" questions are solved by reading the truth table straight into the data inputs.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Decoders &amp; Encoders</h3>
+        <p>A decoder takes <strong>n inputs and activates exactly one of 2ⁿ outputs</strong> (one-hot) — e.g. a 3-to-8 decoder. An encoder is the reverse: <strong>2ⁿ inputs compress to n outputs</strong>. When multiple encoder inputs can be active simultaneously, a <strong>priority encoder</strong> outputs the code for the highest-priority active input and ignores the rest.</p>
+      </div>
+
+      <div class="block">
+        <h3>Comparators &amp; Code Converters</h3>
+        <p>A magnitude comparator takes two n-bit numbers and produces three outputs: A&gt;B, A=B, A&lt;B. Cascading comparators (feeding the equality output into the next stage) extends the comparison to larger numbers.</p>
+        <p><strong>Binary → Gray:</strong> the MSB is copied unchanged; each subsequent Gray bit = XOR of the current and previous binary bit (Gᵢ = Bᵢ ⊕ Bᵢ₊₁). <strong>Gray → Binary</strong> reverses this: the MSB is copied, then each binary bit = XOR of the current Gray bit and the previously computed binary bit.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ DL-05 SEQUENTIAL CIRCUITS ============================================================ -->
+    <section class="sheet" id="dl-05">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 05 / 16</span><span>Digital Logic</span></div>
+        <h2>Sequential Circuits</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">Circuits with memory — output depends on present inputs <em>and</em> current state. The building block for every register and counter.</p>
+      </div>
+
+      <div class="block">
+        <h3>Latch vs Flip-Flop</h3>
+        <p>A <strong>latch</strong> is level-triggered — it changes output as long as its enable/control input is active. A <strong>flip-flop</strong> is edge-triggered — it changes output only on a clock edge, giving synchronous, predictable timing. Every register and counter in a CPU is built from flip-flops, not raw latches.</p>
+      </div>
+
+      <div class="block">
+        <h3>Flip-Flop Types</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Type</th><th class="wrap">Behaviour</th><th class="wrap">Characteristic equation</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">SR</td><td class="wrap">S=1,R=0 → Set &nbsp;| S=0,R=1 → Reset &nbsp;| S=R=0 → hold &nbsp;| S=R=1 → invalid</td><td class="wrap">Q(next) = S + R'Q &nbsp;(SR=0)</td></tr>
+              <tr><td class="wrap">D</td><td class="wrap">Output simply follows D on the clock edge</td><td class="wrap">Q(next) = D</td></tr>
+              <tr><td class="wrap">JK</td><td class="wrap">Like SR, but J=K=1 → toggle (fixes SR's invalid state)</td><td class="wrap">Q(next) = JQ' + K'Q</td></tr>
+              <tr><td class="wrap">T</td><td class="wrap">T=0 → hold &nbsp;| T=1 → toggle</td><td class="wrap">Q(next) = T⊕Q</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--trap">
+          <span class="c-label">Common Trap</span>
+          <p>The <strong>SR=1,1 invalid state</strong> and the <strong>JK race-around condition</strong> get confused. SR's S=R=1 is <em>undefined</em>. JK's J=K=1 is well-defined (toggle) — but if the clock pulse stays high longer than the propagation delay, the output can toggle repeatedly within one pulse. This <em>race-around</em> is solved by master-slave construction, not by avoiding J=K=1.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Master-Slave Configuration</h3>
+        <p>Two flip-flops in series: the <strong>master</strong> is enabled while the clock is high (capturing the input), and the <strong>slave</strong> is enabled while the clock is low (transferring the master's output to the final output). Because master and slave are never enabled simultaneously, the output changes only once per clock cycle — eliminating race-around in JK flip-flops.</p>
+      </div>
+
+      <div class="block">
+        <h3>Excitation Tables</h3>
+        <p>Given the present state Q and desired next state Q(next), the excitation table gives the inputs needed — the core tool for "design a sequential circuit using ___ flip-flops" questions.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="num">Q</th><th class="num">Q(next)</th><th class="num">S</th><th class="num">R</th><th class="num">D</th><th class="num">J</th><th class="num">K</th><th class="num">T</th></tr></thead>
+            <tbody>
+              <tr><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">X</td><td class="num">0</td><td class="num">0</td><td class="num">X</td><td class="num">0</td></tr>
+              <tr><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">X</td><td class="num">1</td></tr>
+              <tr><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">X</td><td class="num">1</td><td class="num">1</td></tr>
+              <tr><td class="num">1</td><td class="num">1</td><td class="num">X</td><td class="num">0</td><td class="num">1</td><td class="num">X</td><td class="num">0</td><td class="num">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The D-column is just Q(next) itself — D flip-flops need no "design" step, which is why they're the default choice for registers.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ DL-06 REGISTERS & COUNTERS ============================================================ -->
+    <section class="sheet" id="dl-06">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 06 / 16</span><span>Digital Logic</span></div>
+        <h2>Registers &amp; Counters</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">Groups of flip-flops that store/shift data, or step through a repeating sequence of states.</p>
+      </div>
+
+      <div class="block">
+        <h3>Shift Registers</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Type</th><th class="wrap">Meaning</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">SISO</td><td class="wrap">Serial In, Serial Out — data shifts in and out one bit at a time</td></tr>
+              <tr><td class="wrap">SIPO</td><td class="wrap">Serial In, Parallel Out — serial-to-parallel conversion</td></tr>
+              <tr><td class="wrap">PISO</td><td class="wrap">Parallel In, Serial Out — parallel-to-serial conversion</td></tr>
+              <tr><td class="wrap">PIPO</td><td class="wrap">Parallel In, Parallel Out — acts as a simple buffer register</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Counter Types</h3>
+        <p><strong>Asynchronous (ripple) counter:</strong> each flip-flop's clock input is driven by the previous flip-flop's output, so state changes ripple through the chain. Simple, but total propagation delay is the <em>sum</em> of every flip-flop's delay.</p>
+        <p><strong>Synchronous counter:</strong> every flip-flop shares the same clock; extra combinational logic decides which flip-flops toggle. Faster (delay = one flip-flop's delay regardless of size) but needs more logic.</p>
+
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula</span>
+          <div class="formula">n flip-flops → MOD-2ⁿ counter (counts 0 to 2ⁿ−1)</div>
+          <p>For a MOD-N counter where N is <em>not</em> a power of 2 (e.g. a decade/MOD-10 counter), you need ⌈log₂N⌉ flip-flops plus reset/feedback logic that forces the counter back to 0 after N−1.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Counter</th><th class="wrap">Construction</th><th class="num">States (n FFs)</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Ring counter</td><td class="wrap">Shift register, output fed back to input — a single 1 circulates</td><td class="num">n</td></tr>
+              <tr><td class="wrap">Johnson (twisted-ring) counter</td><td class="wrap">Like a ring counter, but the <em>complemented</em> output is fed back</td><td class="num">2n</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>"How many flip-flops for a ring counter with N states" and "how many states does an n-flip-flop Johnson counter have" are asked as a pair almost every cycle — keep the n vs 2n distinction crisp.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ DL-07 COMPUTER ARITHMETIC ============================================================ -->
+    <section class="sheet" id="dl-07">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">DL · 07 / 16</span><span>Digital Logic</span></div>
+        <h2>Computer Arithmetic</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">How the ALU actually performs subtraction, multiplication and division on signed binary numbers.</p>
+      </div>
+
+      <div class="block">
+        <h3>Subtraction via 2's Complement</h3>
+        <p>A − B is computed as <strong>A + (2's complement of B)</strong>, so the ALU only needs an adder — no separate subtractor circuit. Any carry out of the MSB is simply discarded.</p>
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula — Overflow Detection</span>
+          <div class="formula">Overflow = Carry into MSB ⊕ Carry out of MSB</div>
+          <p>Equivalently: overflow happens only when adding two numbers of the <strong>same sign</strong> produces a result with the <strong>opposite sign</strong>. Adding numbers of different signs can never overflow.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Booth's Algorithm</h3>
+        <p>Booth's algorithm multiplies two signed 2's-complement numbers directly, with no separate sign handling. It scans the multiplier two bits at a time — the current bit Qₙ and the previous bit Qₙ₋₁ (initialised to 0) — and decides the operation on the accumulator (AC) before an arithmetic shift right of AC:Q:</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="num">Qₙ Qₙ₋₁</th><th class="wrap">Operation on AC (before shift)</th></tr></thead>
+            <tbody>
+              <tr><td class="num">0 0</td><td class="wrap">No operation — shift only</td></tr>
+              <tr><td class="num">0 1</td><td class="wrap">AC = AC + Multiplicand</td></tr>
+              <tr><td class="num">1 0</td><td class="wrap">AC = AC − Multiplicand</td></tr>
+              <tr><td class="num">1 1</td><td class="wrap">No operation — shift only</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>After n cycles (n = bits in the multiplier), the register pair <strong>AC:Q</strong> holds the product. The "01 → add, 10 → subtract" mapping is the single fact most Booth's-algorithm questions hinge on.</p>
+      </div>
+
+      <div class="block">
+        <h3>Division — Restoring vs Non-Restoring</h3>
+        <p><strong>Restoring division:</strong> subtract the divisor from the partial remainder. If negative, set the quotient bit to 0 and <em>add the divisor back</em> ("restore") before shifting; if non-negative, set the quotient bit to 1 and shift directly.</p>
+        <p><strong>Non-restoring division:</strong> skips the restore step — if the previous remainder was negative, it <em>adds</em> the shifted divisor on the next step instead of subtracting, and vice versa. Faster on average since no extra add-back cycle is needed.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-08 CPU ORGANIZATION ============================================================ -->
+    <section class="sheet" id="ca-08">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 08 / 16</span><span>Computer Architecture</span></div>
+        <h2>CPU Organization</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">The registers, buses and cycle that turn stored bits into executed instructions.</p>
+      </div>
+
+      <div class="block">
+        <h3>Core Registers</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Register</th><th class="wrap">Role</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">PC — Program Counter</td><td class="wrap">Holds the address of the <em>next</em> instruction to fetch</td></tr>
+              <tr><td class="wrap">IR — Instruction Register</td><td class="wrap">Holds the instruction currently being decoded/executed</td></tr>
+              <tr><td class="wrap">MAR — Memory Address Register</td><td class="wrap">Holds the address for the current memory access</td></tr>
+              <tr><td class="wrap">MDR / MBR — Memory Data/Buffer Register</td><td class="wrap">Holds data being read from or written to memory</td></tr>
+              <tr><td class="wrap">AC — Accumulator</td><td class="wrap">General-purpose register for arithmetic results (accumulator-based machines)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>The Instruction Cycle</h3>
+        <p>Every instruction passes through <strong>Fetch → Decode → Execute</strong> (some texts add a separate "store result" step). In register-transfer notation, the fetch phase is:</p>
+        <div class="callout callout--formula">
+          <span class="c-label">Key Sequence — Fetch Cycle</span>
+          <div class="formula">MAR ← PC<br>MDR ← M[MAR]<br>IR ← MDR<br>PC ← PC + 1</div>
+          <p>This four-line micro-operation sequence (or a close variant) is one of the most commonly reproduced answers in NET — know it well enough to write from memory.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Von Neumann vs Harvard Architecture</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Aspect</th><th class="wrap">Von Neumann</th><th class="wrap">Harvard</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Memory</td><td class="wrap">Single shared memory for instructions and data</td><td class="wrap">Separate memories/buses for instructions and data</td></tr>
+              <tr><td class="wrap">Access</td><td class="wrap">Instruction fetch and data access compete for the same bus ("von Neumann bottleneck")</td><td class="wrap">Instruction fetch and data access can happen simultaneously</td></tr>
+              <tr><td class="wrap">Typical use</td><td class="wrap">General-purpose CPUs</td><td class="wrap">DSPs, microcontrollers, split I/D caches (modified Harvard)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-09 INSTRUCTION FORMATS ============================================================ -->
+    <section class="sheet" id="ca-09">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 09 / 16</span><span>Computer Architecture</span></div>
+        <h2>Instruction Formats &amp; Addressing Modes</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">How operands are specified — both how many addresses an instruction carries, and how each address is interpreted.</p>
+      </div>
+
+      <div class="block">
+        <h3>Instruction Formats by Address Count</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Format</th><th class="wrap">Example</th><th class="wrap">Meaning</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Three-address</td><td class="wrap">ADD A, B, C</td><td class="wrap">A ← B + C</td></tr>
+              <tr><td class="wrap">Two-address</td><td class="wrap">ADD A, B</td><td class="wrap">A ← A + B</td></tr>
+              <tr><td class="wrap">One-address</td><td class="wrap">ADD A</td><td class="wrap">AC ← AC + M[A] (accumulator implicit)</td></tr>
+              <tr><td class="wrap">Zero-address</td><td class="wrap">PUSH A; PUSH B; ADD</td><td class="wrap">Stack-based — operands are implicitly the top(s) of the stack</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Addressing Modes</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Mode</th><th class="wrap">Example</th><th class="wrap">Operand location</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Immediate</td><td class="wrap">MOV R1, #5</td><td class="wrap">Value is embedded in the instruction itself</td></tr>
+              <tr><td class="wrap">Direct</td><td class="wrap">MOV R1, 1000</td><td class="wrap">R1 ← M[1000]</td></tr>
+              <tr><td class="wrap">Indirect</td><td class="wrap">MOV R1, @1000</td><td class="wrap">R1 ← M[M[1000]]</td></tr>
+              <tr><td class="wrap">Register</td><td class="wrap">MOV R1, R2</td><td class="wrap">Operand already in a register — no memory access</td></tr>
+              <tr><td class="wrap">Register Indirect</td><td class="wrap">MOV R1, (R2)</td><td class="wrap">R1 ← M[R2] — R2 holds the address</td></tr>
+              <tr><td class="wrap">Indexed</td><td class="wrap">MOV R1, (R2 + idx)</td><td class="wrap">Effective address = base register + index register</td></tr>
+              <tr><td class="wrap">Base register</td><td class="wrap">MOV R1, base(off)</td><td class="wrap">Effective address = base register + offset constant</td></tr>
+              <tr><td class="wrap">Relative (PC-relative)</td><td class="wrap">BR +4</td><td class="wrap">Effective address = PC + offset — used for branches</td></tr>
+              <tr><td class="wrap">Auto-inc/decrement</td><td class="wrap">MOV R1, (R2)+</td><td class="wrap">Register-indirect, then the register auto-updates</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>Indirect addressing needs <strong>two</strong> memory accesses (one to fetch the address, one to fetch the operand); register-indirect needs only <strong>one</strong>. "How many memory references does this instruction need" questions are testing exactly this distinction.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-10 CONTROL UNIT DESIGN ============================================================ -->
+    <section class="sheet" id="ca-10">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 10 / 16</span><span>Computer Architecture</span></div>
+        <h2>Control Unit Design</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">How the CPU generates the timing and control signals that drive every other unit.</p>
+      </div>
+
+      <div class="block">
+        <h3>Hardwired vs Microprogrammed</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Aspect</th><th class="wrap">Hardwired</th><th class="wrap">Microprogrammed</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Implementation</td><td class="wrap">Fixed combinational logic + sequencer</td><td class="wrap">Control signals stored as microinstructions in a control store</td></tr>
+              <tr><td class="wrap">Speed</td><td class="wrap">Faster</td><td class="wrap">Slower (extra control-store access)</td></tr>
+              <tr><td class="wrap">Flexibility</td><td class="wrap">Hard to modify — needs redesigning logic</td><td class="wrap">Easy to modify — rewrite microcode</td></tr>
+              <tr><td class="wrap">Best suited to</td><td class="wrap">Small, simple instruction sets</td><td class="wrap">Large, complex instruction sets (CISC)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Horizontal vs Vertical Microprogramming</h3>
+        <p><strong>Horizontal:</strong> every bit in the control word maps directly to one control signal — wide words, no decoding needed, faster but uses more control-store space.</p>
+        <p><strong>Vertical:</strong> control signals are encoded compactly and require a decoder to expand them into actual signals — narrower words, more compact, but decoding adds delay.</p>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>Know the two key registers of a microprogrammed control unit: the <strong>Control Address Register (CAR)</strong>, holding the address of the next microinstruction, and the <strong>Control Data/Buffer Register</strong>, holding the microinstruction currently being executed.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-11 MEMORY HIERARCHY & CACHE ============================================================ -->
+    <section class="sheet" id="ca-11">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 11 / 16</span><span>Computer Architecture</span></div>
+        <h2>Memory Hierarchy &amp; Cache</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">The richest source of numerical questions in this entire unit — mapping techniques, hit ratios, average access time.</p>
+      </div>
+
+      <div class="block">
+        <h3>The Hierarchy &amp; Why It Works</h3>
+        <p>Registers → Cache (L1/L2/L3) → Main Memory → Secondary Storage: speed and cost-per-bit fall as capacity rises. The whole hierarchy is justified by <strong>locality of reference</strong> — <strong>temporal locality</strong> (recently accessed data is likely accessed again soon) and <strong>spatial locality</strong> (data near a recently accessed address is likely accessed soon too).</p>
+      </div>
+
+      <div class="block">
+        <h3>Cache Mapping Techniques</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Technique</th><th class="wrap">How a block is placed</th><th class="wrap">Search cost</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Direct mapping</td><td class="wrap">Block → exactly one line, via (block address) mod (number of lines)</td><td class="wrap">Cheapest — one comparison</td></tr>
+              <tr><td class="wrap">Fully associative</td><td class="wrap">Block → any line at all</td><td class="wrap">Most expensive — search all tags in parallel</td></tr>
+              <tr><td class="wrap">Set-associative (k-way)</td><td class="wrap">Block → any of k lines within one specific set</td><td class="wrap">Compromise — search only k tags</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>For direct mapping, an address splits into three fields: <strong>Tag | Line (index) | Word (offset)</strong>. Line bits = log₂(number of lines); word bits = log₂(words per block); tag bits = remaining address bits.</p>
+
+        <h4>Worked example — address breakdown</h4>
+        <p>16-bit address space, cache has 128 lines, block size = 8 words.</p>
+        <p>Word/offset bits = log₂8 = <strong>3</strong> &nbsp;|&nbsp; Line bits = log₂128 = <strong>7</strong> &nbsp;|&nbsp; Tag bits = 16 − 7 − 3 = <strong>6</strong></p>
+      </div>
+
+      <div class="block">
+        <h3>Average Memory Access Time (AMAT)</h3>
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula</span>
+          <div class="formula">T_avg = h × T_cache + (1 − h) × T_main</div>
+          <p>where h = cache hit ratio. Worked example: T_cache = 10ns, T_main = 100ns, h = 0.9 → T_avg = 0.9×10 + 0.1×100 = 9 + 10 = <strong>19ns</strong>.</p>
+        </div>
+        <p>Some questions instead use <code>T_avg = T_cache + (1−h)×T_main</code> (cache is always checked first, memory only on a miss) — read carefully to see which model the question assumes, since both appear in past papers.</p>
+      </div>
+
+      <div class="block">
+        <h3>Replacement &amp; Write Policies</h3>
+        <p><strong>Replacement</strong> (needed when an associative/set-associative set is full): <strong>LRU</strong> (Least Recently Used), <strong>FIFO</strong>, <strong>LFU</strong> (Least Frequently Used), <strong>Optimal</strong> (theoretical best, used as a benchmark), and <strong>Random</strong>.</p>
+        <p><strong>Write policies:</strong> <strong>write-through</strong> updates cache and main memory simultaneously (simple, always consistent, slower); <strong>write-back</strong> updates only the cache and marks the line "dirty," writing to main memory only when that line is evicted (faster, needs a dirty bit).</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-12 VIRTUAL MEMORY ============================================================ -->
+    <section class="sheet" id="ca-12">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 12 / 16</span><span>Computer Architecture</span></div>
+        <h2>Virtual Memory</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">How a program addresses more memory than physically exists, and what happens when the part it needs isn't resident.</p>
+      </div>
+
+      <div class="block">
+        <h3>Paging</h3>
+        <p>Logical address space is divided into fixed-size <strong>pages</strong>; physical memory into same-size <strong>frames</strong>. A <strong>page table</strong> maps page numbers to frame numbers. A logical address splits into <code>page number | offset</code>; the offset is copied unchanged into the physical address, while the page number is translated via the page table.</p>
+        <p>A <strong>TLB (Translation Lookaside Buffer)</strong> caches recent page-table entries so most translations skip the page-table lookup entirely.</p>
+      </div>
+
+      <div class="block">
+        <h3>Page Replacement Algorithms</h3>
+        <p><strong>FIFO</strong> (evict the oldest-loaded page), <strong>LRU</strong> (evict the least-recently-used page), and <strong>Optimal/MIN</strong> (evict the page that won't be needed for the longest time — theoretical, used only for comparison).</p>
+        <div class="callout callout--trap">
+          <span class="c-label">Common Trap — Belady's Anomaly</span>
+          <p>For <strong>FIFO</strong> specifically, <em>increasing</em> the number of available frames can sometimes <em>increase</em> the number of page faults — the opposite of what intuition suggests. This counterintuitive result, demonstrable on a specific reference string, is one of the most-repeated questions in this area. LRU and Optimal do not suffer from this anomaly.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Thrashing &amp; Segmentation</h3>
+        <p><strong>Thrashing</strong> occurs when a process doesn't have enough frames to hold its working set — it spends more time paging data in and out than executing, and CPU utilisation collapses even though the CPU looks "busy."</p>
+        <p><strong>Segmentation</strong> divides a program into logical, variable-sized units (code, data, stack), each described by a segment table entry giving a base address and a length/limit — unlike paging's fixed-size, purely physical division.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-13 I/O ORGANIZATION ============================================================ -->
+    <section class="sheet" id="ca-13">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 13 / 16</span><span>Computer Architecture</span></div>
+        <h2>I/O Organization</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">Three escalating strategies for moving data between the CPU and peripheral devices.</p>
+      </div>
+
+      <div class="block">
+        <h3>Programmed I/O vs Interrupt-Driven vs DMA</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Method</th><th class="wrap">How it works</th><th class="wrap">CPU involvement</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Programmed I/O</td><td class="wrap">CPU repeatedly polls the device status register (busy-waiting) until ready</td><td class="wrap">Highest — CPU does nothing else while waiting</td></tr>
+              <tr><td class="wrap">Interrupt-driven I/O</td><td class="wrap">CPU continues other work; device raises an interrupt when ready</td><td class="wrap">Moderate — CPU interrupted only when data is actually ready</td></tr>
+              <tr><td class="wrap">DMA</td><td class="wrap">A dedicated DMA controller transfers entire blocks directly between device and memory</td><td class="wrap">Lowest — CPU involved only to initiate and at completion</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>DMA and the CPU both need the system bus, so the DMA controller requests it and the CPU grants it (<strong>cycle stealing</strong>) — the CPU is briefly suspended for individual bus cycles, not for the entire transfer.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Interrupts</h3>
+        <p><strong>Maskable</strong> interrupts can be disabled by software; <strong>non-maskable</strong> cannot (reserved for critical events). <strong>Vectored</strong> interrupts let the device supply the address of its own service routine directly; with <strong>non-vectored</strong> interrupts the CPU jumps to a fixed address and must poll to find which device interrupted. With multiple devices, <strong>daisy-chaining</strong> or a priority encoder establishes interrupt priority.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-14 PIPELINING ============================================================ -->
+    <section class="sheet" id="ca-14">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 14 / 16</span><span>Computer Architecture</span></div>
+        <h2>Pipelining &amp; Hazards</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">Highest-yield numerical topic in all of Computer Architecture — speedup, throughput, efficiency and hazard types appear in almost every NET paper.</p>
+      </div>
+
+      <div class="block">
+        <h3>What Pipelining Does</h3>
+        <p class="lede">Pipelining overlaps the execution of multiple instructions by dividing execution into <strong>stages</strong> (e.g. Fetch, Decode, Execute, Write-back). While instruction N is in stage k, instruction N+1 is in stage k−1, N+2 in k−2, and so on — like an assembly line. The clock cycle = the longest single stage's latency (the bottleneck stage), not the sum of all stages.</p>
+      </div>
+
+      <div class="block">
+        <h3>Key Formulas</h3>
+        <div class="callout callout--formula">
+          <span class="c-label">Formula 1 — Time with pipeline (k stages, n instructions, t = stage time)</span>
+          <div class="formula">T_pipeline = (k + n − 1) × t</div>
+          <p>Explanation: the first instruction takes k stages (k×t) to complete, then each subsequent instruction completes every t — so the remaining n−1 instructions add (n−1)×t.</p>
+        </div>
+        <div class="callout callout--formula">
+          <span class="c-label">Formula 2 — Speedup over sequential execution</span>
+          <div class="formula">Speedup = T_sequential / T_pipeline = (n × k × t) / ((k + n − 1) × t)</div>
+          <p>As n → ∞, speedup → k (the number of stages). In practice, hazards and stalls reduce this to well below k.</p>
+        </div>
+        <div class="callout callout--formula">
+          <span class="c-label">Formula 3 — Throughput &amp; Efficiency</span>
+          <div class="formula">Throughput = n / T_pipeline &nbsp;&nbsp;&nbsp;&nbsp; Efficiency = Throughput / (k × f) = Speedup / k</div>
+          <p>Efficiency ranges from 0 to 1 (or 0%–100%). When n is very large, efficiency approaches 100%.</p>
+        </div>
+
+        <h4>Worked example</h4>
+        <p>5-stage pipeline, 100 instructions, each stage 10 ns.</p>
+        <p>T_pipeline = (5 + 100 − 1) × 10 = 104 × 10 = <strong>1040 ns</strong></p>
+        <p>T_sequential = 100 × 5 × 10 = <strong>5000 ns</strong></p>
+        <p>Speedup = 5000 / 1040 ≈ <strong>4.81</strong> &nbsp;|&nbsp; Efficiency = 4.81 / 5 ≈ <strong>96.2%</strong></p>
+      </div>
+
+      <div class="block">
+        <h3>Pipeline Hazards</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Hazard type</th><th class="wrap">Cause</th><th class="wrap">Solutions</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Structural</td><td class="wrap">Two instructions need the same hardware resource at the same time (e.g. single memory for fetch + data access)</td><td class="wrap">Duplicate hardware (split I-cache and D-cache); stall one instruction</td></tr>
+              <tr><td class="wrap">Data (RAW / WAR / WAW)</td><td class="wrap">An instruction needs data not yet produced by an earlier instruction in the pipeline</td><td class="wrap">Forwarding/bypassing (RAW); stalls (bubbles); out-of-order execution; register renaming (WAR/WAW)</td></tr>
+              <tr><td class="wrap">Control / Branch</td><td class="wrap">A branch changes the PC before the pipeline knows what to fetch next</td><td class="wrap">Branch prediction; delayed branching; branch target buffer; flush on misprediction</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--trap">
+          <span class="c-label">Common Trap — RAW vs WAR vs WAW</span>
+          <p><strong>RAW (Read After Write)</strong> — true data dependency, the most common, cannot be fully eliminated without forwarding or stalls. <strong>WAR (Write After Read)</strong> — anti-dependency, instruction writes before a preceding instruction reads; solved by register renaming. <strong>WAW (Write After Write)</strong> — output dependency; also solved by register renaming. RAW is the one that causes actual stalls in in-order pipelines.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Non-uniform Stage Latencies</h3>
+        <p>When stages are unequal, the pipeline clock = the <strong>slowest stage</strong>. If the EX stage takes 30 ns while the others take 10 ns, the clock is 30 ns and the shorter stages sit idle during their remaining 20 ns. Normalising to the slow stage (or adding buffers to split it) is the design fix — and the basis of "what is the maximum pipeline throughput" questions that give unequal stage times.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-15 RISC VS CISC ============================================================ -->
+    <section class="sheet" id="ca-15">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 15 / 16</span><span>Computer Architecture</span></div>
+        <h2>RISC vs CISC</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">Two fundamentally different philosophies for what an instruction set should do — and which real processors belong to each camp.</p>
+      </div>
+
+      <div class="block">
+        <h3>Side-by-Side Comparison</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Feature</th><th class="wrap">RISC</th><th class="wrap">CISC</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Instruction set size</td><td class="wrap">Small (dozens of instructions)</td><td class="wrap">Large (hundreds of instructions)</td></tr>
+              <tr><td class="wrap">Instruction format</td><td class="wrap">Fixed length, simple formats</td><td class="wrap">Variable length, many formats</td></tr>
+              <tr><td class="wrap">Addressing modes</td><td class="wrap">Few (typically register + register-indirect)</td><td class="wrap">Many (direct, indexed, auto-inc…)</td></tr>
+              <tr><td class="wrap">Registers</td><td class="wrap">Large register file (many general-purpose)</td><td class="wrap">Fewer, often special-purpose</td></tr>
+              <tr><td class="wrap">Memory access</td><td class="wrap">Load/store only — all other ops use registers</td><td class="wrap">Many instructions can access memory directly</td></tr>
+              <tr><td class="wrap">Control unit</td><td class="wrap">Hardwired (fast)</td><td class="wrap">Microprogrammed (flexible)</td></tr>
+              <tr><td class="wrap">CPI</td><td class="wrap">Approximately 1</td><td class="wrap">Usually > 1</td></tr>
+              <tr><td class="wrap">Pipelining</td><td class="wrap">Highly pipelined — fixed-length instructions make it easy</td><td class="wrap">Harder to pipeline due to variable-length instructions</td></tr>
+              <tr><td class="wrap">Examples</td><td class="wrap">ARM, MIPS, RISC-V, SPARC, PowerPC</td><td class="wrap">Intel x86, x86-64, VAX, Motorola 68000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>"Which property belongs to RISC?" is one of the most formulaic NET question types. The three RISC anchors that slip people up: <strong>fixed-length instructions</strong> (not shorter — CISC can also have short instructions, just not uniform ones), <strong>hardwired control unit</strong>, and <strong>load-store architecture</strong> (the only instructions that touch memory are LOAD and STORE; everything else is register-to-register).</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>The RISC vs CISC Debate in Practice</h3>
+        <p>Modern x86 processors (CISC ISA) internally decode complex instructions into micro-operations and execute them on a RISC-like core — so the ISA boundary has become less meaningful at the micro-architecture level. However, the <em>conceptual</em> characteristics of each category are still clean and testable.</p>
+        <div class="callout callout--trap">
+          <span class="c-label">Common Trap</span>
+          <p>RISC does <strong>not</strong> mean "fewer transistors" or "simpler chip." The large register file and hardwired control logic of RISC chips can use <em>more</em> transistors than CISC chips. What's simpler is the <em>instruction decode logic</em>, not the chip overall.</p>
+        </div>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ CA-16 PARALLEL PROCESSING ============================================================ -->
+    <section class="sheet" id="ca-16">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">CA · 16 / 16</span><span>Computer Architecture</span></div>
+        <h2>Parallel Processing &amp; Flynn's Taxonomy</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot"></span></div>
+        </div>
+        <p class="tb-desc">Classification of parallel architectures, Amdahl's speedup law, and interconnection network basics.</p>
+      </div>
+
+      <div class="block">
+        <h3>Flynn's Taxonomy</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Class</th><th class="wrap">Instruction streams</th><th class="wrap">Data streams</th><th class="wrap">Description &amp; example</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">SISD</td><td class="num">1</td><td class="num">1</td><td class="wrap">Classical sequential machine — a single CPU executing one instruction on one piece of data at a time</td></tr>
+              <tr><td class="wrap">SIMD</td><td class="num">1</td><td class="num">Multiple</td><td class="wrap">One instruction applied to multiple data in parallel — vector processors, GPU cores, Intel SSE/AVX</td></tr>
+              <tr><td class="wrap">MISD</td><td class="num">Multiple</td><td class="num">1</td><td class="wrap">Multiple instructions on the same data — mostly theoretical; fault-tolerant pipeline is the textbook example</td></tr>
+              <tr><td class="wrap">MIMD</td><td class="num">Multiple</td><td class="num">Multiple</td><td class="wrap">Most real multiprocessors and multicomputers; each processor runs its own instruction stream on its own data</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="c-label">Exam Focus</span>
+          <p>MISD is the one candidate that trips people up — it is <em>not</em> a common practical architecture. The standard exam answer is "fault-tolerant systems (same data processed by different instruction streams for cross-checking)" or "systolic arrays" depending on the text. Know it is mostly theoretical.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Amdahl's Law</h3>
+        <div class="callout callout--formula">
+          <span class="c-label">Key Formula — Maximum Speedup</span>
+          <div class="formula">Speedup = 1 / ( (1 − P) + P/N )</div>
+          <p>where P = fraction of the program that can be parallelised, N = number of processors.</p>
+        </div>
+        <p>As N → ∞, speedup → 1/(1−P). So even with infinite processors, a program that is only 90% parallel (P=0.9) can achieve at most <strong>10× speedup</strong>. The serial bottleneck (1−P) is the absolute ceiling. This is a favourite numerical question.</p>
+
+        <h4>Worked example</h4>
+        <p>P = 0.8, N = 4 → Speedup = 1 / (0.2 + 0.8/4) = 1 / (0.2 + 0.2) = 1/0.4 = <strong>2.5×</strong></p>
+        <p>Theoretical max (N→∞): 1/0.2 = <strong>5×</strong></p>
+      </div>
+
+      <div class="block">
+        <h3>Multiprocessor Memory Models</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Model</th><th class="wrap">Memory</th><th class="wrap">Also known as</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Shared-memory (SMP/UMA)</td><td class="wrap">All processors share one physical memory equally — Uniform Memory Access</td><td class="wrap">Tightly coupled, symmetric multiprocessor</td></tr>
+              <tr><td class="wrap">NUMA</td><td class="wrap">Each processor has local memory; remote memory is accessible but slower — Non-Uniform Memory Access</td><td class="wrap">Found in large multi-socket server systems</td></tr>
+              <tr><td class="wrap">Distributed memory (message-passing)</td><td class="wrap">Each processor has private memory; communication is explicit via messages</td><td class="wrap">Loosely coupled, cluster/MPP</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Interconnection Networks</h3>
+        <p>Key parameters for comparing networks: <strong>diameter</strong> (max hops between any two nodes), <strong>bisection bandwidth</strong> (minimum bandwidth across any cut that splits the network in half), and <strong>degree</strong> (connections per node).</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Topology</th><th class="num">Diameter</th><th class="num">Degree</th></tr></thead>
+            <tbody>
+              <tr><td class="wrap">Bus</td><td class="num">1</td><td class="num">n−1</td></tr>
+              <tr><td class="wrap">Ring (n nodes)</td><td class="num">n/2</td><td class="num">2</td></tr>
+              <tr><td class="wrap">2D Mesh (√n × √n)</td><td class="num">2(√n−1)</td><td class="num">4</td></tr>
+              <tr><td class="wrap">Hypercube (2ᵏ nodes)</td><td class="num">k</td><td class="num">k</td></tr>
+              <tr><td class="wrap">Fully connected</td><td class="num">1</td><td class="num">n−1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A <strong>k-dimensional hypercube</strong> has 2ᵏ nodes, each connected to k neighbours, with diameter k. It offers a good balance between diameter and wiring cost — a recurring exam comparison point.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ REF-17 FORMULA & FACT SHEET ============================================================ -->
+    <section class="sheet" id="ref-17">
+      <div class="title-block">
+        <div class="tb-meta"><span class="sheet-no">REF · 17</span><span>Quick Reference</span></div>
+        <h2>Formula &amp; Fact Sheet</h2>
+        <div class="freq">
+          <span class="freq-label">Frequency</span>
+          <div class="dots"><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span><span class="freq-dot on"></span></div>
+        </div>
+        <p class="tb-desc">Every formula, range, and critical fact from all 16 sheets compressed onto one page. Study this the night before the exam.</p>
+      </div>
+
+      <!-- Digital Logic -->
+      <div class="block">
+        <h3>Number Systems</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Scheme</th><th class="num wrap">Range (n-bit)</th><th class="num">Zeros</th></tr></thead>
+            <tbody>
+              <tr><td>Sign-magnitude</td><td class="num">−(2ⁿ⁻¹−1) to +(2ⁿ⁻¹−1)</td><td class="num">2</td></tr>
+              <tr><td>1's complement</td><td class="num">−(2ⁿ⁻¹−1) to +(2ⁿ⁻¹−1)</td><td class="num">2</td></tr>
+              <tr><td>2's complement</td><td class="num">−2ⁿ⁻¹ to +(2ⁿ⁻¹−1)</td><td class="num">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>IEEE-754 bias</strong> = 2^(k−1)−1 (k = exponent bits): 32-bit → bias 127, 64-bit → bias 1023. Exponent all-0 = zero/denorm; all-1 = ±∞ or NaN.</p>
+        <p><strong>Excess-3</strong> is self-complementing: 9's complement obtained by inverting all bits.</p>
+      </div>
+
+      <div class="block">
+        <h3>Boolean Algebra</h3>
+        <p><strong>De Morgan's:</strong> (A+B)' = A'B' &nbsp;|&nbsp; (AB)' = A'+B'</p>
+        <p><strong>Absorption:</strong> A+AB = A &nbsp;|&nbsp; A(A+B) = A &nbsp;|&nbsp; A+A'B = A+B</p>
+        <p><strong>Boolean functions of n variables:</strong> 2^(2ⁿ) &nbsp;(n=2 → 16; n=3 → 256)</p>
+        <p><strong>Universal gates:</strong> NAND and NOR. NAND-as-NOT: 1 gate; AND: 2; OR: 3. NOR is symmetric.</p>
+        <p><strong>XOR = 1 when inputs differ; XNOR = 1 when inputs match.</strong></p>
+      </div>
+
+      <div class="block">
+        <h3>K-Maps</h3>
+        <p>Groups must be powers of 2. A group of 2ᵏ cells eliminates k variables. Cells wrap at all edges. <strong>Prime implicant</strong> = cannot be enlarged. <strong>Essential PI</strong> = only group covering some minterm → must appear in solution.</p>
+      </div>
+
+      <div class="block">
+        <h3>Combinational Circuits</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th class="wrap">Circuit</th><th class="wrap">Key equation / fact</th></tr></thead>
+            <tbody>
+              <tr><td>Half Adder</td><td>Sum = A⊕B; Carry = AB</td></tr>
+              <tr><td>Full Adder</td><td>Sum = A⊕B⊕Cin; Cout = AB+BCin+ACin; = 2 HAs + OR</td></tr>
+              <tr><td>MUX (n selects)</td><td>2ⁿ data inputs; can implement any n-variable function</td></tr>
+              <tr><td>Decoder (n-to-2ⁿ)</td><td>Activates exactly one output; can implement any Boolean function</td></tr>
+              <tr><td>Binary→Gray</td><td>MSB copied; Gᵢ = Bᵢ ⊕ Bᵢ₊₁ for remaining bits</td></tr>
+              <tr><td>Gray→Binary</td><td>MSB copied; Bᵢ = Bᵢ₊₁ ⊕ Gᵢ</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Sequential Circuits</h3>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>FF</th><th class="wrap">Characteristic eq.</th><th class="wrap">Note</th></tr></thead>
+            <tbody>
+              <tr><td>SR</td><td>Q* = S + R'Q (SR=0)</td><td class="wrap">S=R=1 invalid</td></tr>
+              <tr><td>D</td><td>Q* = D</td><td class="wrap">Simplest; used in registers</td></tr>
+              <tr><td>JK</td><td>Q* = JQ' + K'Q</td><td class="wrap">J=K=1 → toggle; race-around → use master-slave</td></tr>
+              <tr><td>T</td><td>Q* = T⊕Q</td><td class="wrap">T=1 → toggle; T=0 → hold</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Registers &amp; Counters</h3>
+        <p><strong>n flip-flops → MOD-2ⁿ counter</strong> (counts 0 to 2ⁿ−1).</p>
+        <p><strong>Ring counter:</strong> n FFs → n states. &nbsp;<strong>Johnson counter:</strong> n FFs → 2n states.</p>
+        <p>Asynchronous counter delay = sum of all FF delays. Synchronous = one FF delay.</p>
+      </div>
+
+      <div class="block">
+        <h3>Computer Arithmetic</h3>
+        <p><strong>Subtraction</strong> = A + 2's complement of B; carry-out discarded.</p>
+        <p><strong>Overflow</strong> = Carry-in to MSB ⊕ Carry-out from MSB.</p>
+        <p><strong>Booth's algorithm:</strong> Qₙ Qₙ₋₁ = 01 → AC+M; 10 → AC−M; 00/11 → no op. Then arithmetic shift right.</p>
+      </div>
+
+      <!-- Computer Architecture -->
+      <div class="block">
+        <h3>CPU &amp; Instructions</h3>
+        <p><strong>Fetch sequence:</strong> MAR←PC → MDR←M[MAR] → IR←MDR → PC←PC+1</p>
+        <p><strong>Indirect addressing</strong> = 2 memory accesses; <strong>register-indirect</strong> = 1 memory access.</p>
+        <p><strong>Hardwired CU</strong> = fast, inflexible. <strong>Microprogrammed CU</strong> = slower, flexible, suits CISC.</p>
+      </div>
+
+      <div class="block">
+        <h3>Cache Memory</h3>
+        <div class="callout callout--formula">
+          <span class="c-label">AMAT</span>
+          <div class="formula">T_avg = h × T_c + (1−h) × T_m</div>
+        </div>
+        <p><strong>Direct map:</strong> one possible line per block — Tag | Line | Word. &nbsp;Line bits = log₂(lines); Word bits = log₂(words/block).</p>
+        <p><strong>Write-through</strong> = always updates main memory simultaneously. <strong>Write-back</strong> = updates main memory only on eviction (needs dirty bit).</p>
+        <p><strong>Replacement:</strong> LRU, FIFO, LFU, Optimal (MIN), Random.</p>
+      </div>
+
+      <div class="block">
+        <h3>Virtual Memory</h3>
+        <p><strong>Belady's Anomaly</strong> = more frames can give MORE page faults with FIFO (not LRU or Optimal).</p>
+        <p><strong>Thrashing</strong> = process lacks enough frames for working set → collapses CPU utilisation.</p>
+        <p>TLB caches recent page-table entries for fast translation.</p>
+      </div>
+
+      <div class="block">
+        <h3>Pipelining</h3>
+        <div class="callout callout--formula">
+          <span class="c-label">Pipeline Formulas (k stages, n instructions, t = stage time)</span>
+          <div class="formula">T_pipeline = (k + n − 1) × t<br>Speedup = (n×k×t) / T_pipeline → k as n→∞<br>Efficiency = Speedup / k</div>
+        </div>
+        <p><strong>Hazards:</strong> Structural (resource conflict) | Data / RAW (most critical — forwarding/stall) | Control (branch — predict/flush). RAW causes actual stalls in in-order pipelines; WAR and WAW solved by renaming.</p>
+      </div>
+
+      <div class="block">
+        <h3>RISC Anchors to Remember</h3>
+        <p>Fixed-length instructions · Load/store architecture (only LOAD/STORE touch memory) · Hardwired CU · Large register file · CPI ≈ 1 · Highly pipelined · Examples: ARM, MIPS, RISC-V</p>
+      </div>
+
+      <div class="block">
+        <h3>Flynn's Taxonomy &amp; Amdahl's Law</h3>
+        <p>SISD | SIMD (GPU, vector) | MISD (fault-tolerant, theoretical) | MIMD (real multiprocessors)</p>
+        <div class="callout callout--formula">
+          <span class="c-label">Amdahl's Law</span>
+          <div class="formula">Speedup = 1 / ( (1−P) + P/N ) → 1/(1−P) as N→∞</div>
+        </div>
+        <p><strong>Hypercube (2ᵏ nodes):</strong> diameter = k, degree = k. &nbsp;<strong>Ring (n nodes):</strong> diameter = n/2, degree = 2. &nbsp;<strong>Fully connected:</strong> diameter = 1, degree = n−1.</p>
+      </div>
+
+      <div class="sheet-nav"><button class="prev-btn" data-nav="prev"></button><button class="next-btn" data-nav="next"></button></div>
+    </section>
+
+    <!-- ============================================================ QUIZ ============================================================ -->
+    <section class="sheet" id="quiz">
+      <div class="quiz-header">
+        <h2>Practice Questions</h2>
+        <div class="quiz-counter" id="quizCounter">Q 1 / 30</div>
+      </div>
+      <div class="quiz-progress"><div class="quiz-progress-fill" id="quizFill" style="width:0%"></div></div>
+      <div id="quizBody"></div>
+      <div class="quiz-score-card" id="quizScore">
+        <div class="score-ring" id="scoreRing">0%</div>
+        <h3 id="scoreTitle">Quiz Complete!</h3>
+        <p id="scoreMsg"></p>
+        <div class="score-breakdown">
+          <div class="score-item correct"><span class="si-val" id="scoreCorrect">0</span><span class="si-label">Correct</span></div>
+          <div class="score-item wrong"><span class="si-val" id="scoreWrong">0</span><span class="si-label">Wrong</span></div>
+          <div class="score-item"><span class="si-val" id="scoreTotal">0</span><span class="si-label">Total</span></div>
+        </div>
+        <div class="quiz-actions" style="justify-content:center">
+          <button class="btn btn-primary" id="quizRetry">Retry Quiz</button>
+          <button class="btn" onclick="showSection('ref-17')">Review Formula Sheet</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  /* ------------------------------------------------------------------ */
+  /* QUIZ DATA — 30 questions spanning all 16 sheets                      */
+  /* ------------------------------------------------------------------ */
+  var QUESTIONS = [
+    {tag:'DL·01',q:'What is the range of an 8-bit 2\'s complement number?',opts:['−127 to +127','−128 to +127','−128 to +128','−127 to +128'],ans:1,exp:'2\'s complement range is −2ⁿ⁻¹ to +(2ⁿ⁻¹−1). For n=8: −128 to +127. The range is asymmetric because there is exactly one zero.'},
+    {tag:'DL·01',q:'How many distinct zeros exist in 1\'s complement representation?',opts:['Zero — no zeros','One (+0 only)','Two (+0 and −0)','Depends on n'],ans:2,exp:'Both sign-magnitude and 1\'s complement have two zeros: +0 (all bits 0) and −0 (MSB=1, rest=0 for SM; all bits 1 for 1\'s complement). 2\'s complement has exactly one zero.'},
+    {tag:'DL·01',q:'In IEEE-754 single precision, the exponent field has 8 bits. What is the bias value?',opts:['128','127','255','126'],ans:1,exp:'Bias = 2^(k−1) − 1 where k = number of exponent bits. For k=8: 2⁷ − 1 = 127.'},
+    {tag:'DL·01',q:'A floating point exponent field that is all 1s (11111111) in IEEE-754 single precision indicates:',opts:['Zero','Denormalized number','Infinity or NaN','Largest finite number'],ans:2,exp:'All-one exponent is reserved for ±Infinity (mantissa=0) and NaN (mantissa≠0). All-zero exponent means zero or denormalized.'},
+    {tag:'DL·01',q:'Which property makes Excess-3 code useful for BCD subtraction?',opts:['It uses fewer bits','It is self-complementing','It has no invalid states','It matches Gray code ordering'],ans:1,exp:'Excess-3 is self-complementing: the 9\'s complement of any digit is obtained simply by inverting all 4 bits, which simplifies the complement step in BCD subtraction.'},
+    {tag:'DL·02',q:'According to De Morgan\'s theorem, (A·B)′ is equal to:',opts:['A′·B′','A′+B′','A+B','(A+B)′'],ans:1,exp:'De Morgan\'s: (A·B)′ = A′+B′. The dual: (A+B)′ = A′·B′. These are the fundamental theorems for converting between AND and OR logic.'},
+    {tag:'DL·02',q:'How many distinct Boolean functions exist for 3 input variables?',opts:['8','16','64','256'],ans:3,exp:'The number of Boolean functions of n variables = 2^(2ⁿ). For n=3: 2^(2³) = 2^8 = 256.'},
+    {tag:'DL·02',q:'The minimum number of NAND gates required to implement the NOT function is:',opts:['1','2','3','4'],ans:0,exp:'Tie both inputs of a NAND gate together: A NAND A = (A·A)′ = A′. So a single NAND gate with both inputs connected implements NOT.'},
+    {tag:'DL·02',q:'Which gate produces output 1 only when its inputs are the SAME?',opts:['XOR','XNOR','NOR','NAND'],ans:1,exp:'XNOR (Exclusive NOR) outputs 1 when both inputs are equal (both 0 or both 1). XOR outputs 1 when inputs differ.'},
+    {tag:'DL·03',q:'In a Karnaugh map, a group of 8 cells eliminates how many variables?',opts:['2','3','4','8'],ans:1,exp:'A group of 2ᵏ cells eliminates k variables. For 8 = 2³ cells, k=3 variables are eliminated from the product term.'},
+    {tag:'DL·03',q:'An essential prime implicant is one that:',opts:['Has the maximum number of cells','Covers at least one minterm no other prime implicant covers','Appears in both SOP and POS','Is always a group of four'],ans:1,exp:'An essential prime implicant covers at least one minterm that is not covered by any other prime implicant, making it mandatory in the minimal expression.'},
+    {tag:'DL·03',q:'Column headers in a K-map use Gray code order. Which ordering is correct for a 2-variable (AB) axis?',opts:['00 01 10 11','00 01 11 10','00 10 11 01','01 00 11 10'],ans:1,exp:'Gray code: 00 → 01 → 11 → 10. Adjacent entries differ in exactly one bit. Standard binary order (00 01 10 11) would place cells that differ in two bits next to each other, breaking the adjacency rule.'},
+    {tag:'DL·04',q:'A 4:1 multiplexer requires how many select lines?',opts:['1','2','3','4'],ans:1,exp:'A MUX with n select lines has 2ⁿ data inputs. For 4 inputs: 2ⁿ = 4 → n = 2 select lines.'},
+    {tag:'DL·04',q:'The sum output of a half adder is:',opts:['A AND B','A OR B','A XOR B','A NAND B'],ans:2,exp:'Half adder: Sum = A⊕B (XOR) and Carry = A·B (AND). A full adder adds a carry-in: Sum = A⊕B⊕Cin.'},
+    {tag:'DL·04',q:'A 3-to-8 decoder with one data input can implement:',opts:['Only 3-variable AND functions','Any 3-variable Boolean function','Only symmetric functions','Up to 3 functions simultaneously'],ans:1,exp:'A decoder generates all minterms for n input variables. Since any Boolean function is a sum of minterms, any function can be implemented by ORing the selected output lines.'},
+    {tag:'DL·05',q:'Which flip-flop has an invalid state when both inputs are 1?',opts:['D flip-flop','T flip-flop','JK flip-flop','SR flip-flop'],ans:3,exp:'SR flip-flop: S=R=1 is an invalid/forbidden state because both Set and Reset are active simultaneously, leading to an indeterminate output. JK flip-flop solves this by defining J=K=1 as toggle.'},
+    {tag:'DL·05',q:'The characteristic equation of a JK flip-flop is:',opts:['Q* = J','Q* = J⊕K','Q* = JQ′ + K′Q','Q* = KQ + J′Q′'],ans:2,exp:'Q*(next) = JQ′ + K′Q. When J=K=1, Q* = Q′ (toggle). When J=0,K=0, Q*=Q (hold). When J=1,K=0, Q*=1 (set). When J=0,K=1, Q*=0 (reset).'},
+    {tag:'DL·05',q:'What is the purpose of the master-slave configuration in JK flip-flops?',opts:['To increase clock speed','To eliminate the race-around condition','To reduce power consumption','To implement both Set and Reset'],ans:1,exp:'Race-around occurs when J=K=1 and the clock remains high, causing the output to toggle multiple times. Master-slave design separates capture (on clock high) and transfer (on clock low), ensuring output changes only once per cycle.'},
+    {tag:'DL·06',q:'A Johnson counter built with 4 flip-flops has how many distinct states?',opts:['4','8','16','2'],ans:1,exp:'A Johnson (twisted ring) counter with n flip-flops has 2n distinct states. For n=4: 2×4 = 8 states. A regular ring counter with 4 FFs has only 4 states.'},
+    {tag:'DL·06',q:'For a MOD-6 counter, the minimum number of flip-flops required is:',opts:['2','3','4','6'],ans:1,exp:'For MOD-N counter, need ⌈log₂N⌉ flip-flops. For MOD-6: ⌈log₂6⌉ = ⌈2.585⌉ = 3 flip-flops (which give up to MOD-8, with feedback to reset at count 6).'},
+    {tag:'DL·07',q:'In 2\'s complement subtraction A − B, if there is a carry out of the MSB:',opts:['It indicates overflow','It is added to the result','It is simply discarded','It indicates underflow'],ans:2,exp:'In 2\'s complement arithmetic, A−B = A + (2\'s complement of B). Any carry out of the MSB is discarded — it is not part of the result. Overflow is detected differently: carry-in to MSB ⊕ carry-out from MSB.'},
+    {tag:'DL·07',q:'In Booth\'s algorithm, what operation is performed when the current bit Qₙ=0 and previous bit Qₙ₋₁=1?',opts:['No operation','Subtract multiplicand from AC','Add multiplicand to AC','Double AC'],ans:2,exp:'Booth\'s algorithm: 01 → AC = AC + Multiplicand (add); 10 → AC = AC − Multiplicand (subtract); 00 or 11 → no arithmetic operation. After each step, perform an arithmetic right shift of AC:Q.'},
+    {tag:'CA·08',q:'Which register holds the address of the NEXT instruction to be executed?',opts:['Instruction Register (IR)','Memory Address Register (MAR)','Program Counter (PC)','Memory Data Register (MDR)'],ans:2,exp:'The Program Counter (PC) always points to the next instruction to be fetched. After fetch, PC is incremented. IR holds the current instruction being decoded. MAR holds the address for the current memory access.'},
+    {tag:'CA·08',q:'The von Neumann bottleneck refers to:',opts:['Slow ALU operations','Single shared bus for instruction and data memory','Limited number of registers','Cache miss penalties'],ans:1,exp:'Von Neumann architecture uses a single shared memory for both instructions and data. Since they share the same bus, instruction fetch and data access cannot happen simultaneously, creating a bottleneck.'},
+    {tag:'CA·09',q:'How many memory accesses does indirect addressing mode require?',opts:['0 — operand is in the instruction','1','2','3'],ans:2,exp:'Indirect addressing: first access fetches the address stored at the given location, second access fetches the actual operand from that address. Register-indirect needs only 1 memory access (the address is already in a register).'},
+    {tag:'CA·10',q:'Which type of control unit is faster but harder to modify?',opts:['Microprogrammed','Hardwired','Both are equally fast','ROM-based'],ans:1,exp:'Hardwired control uses fixed combinational logic — faster but requires redesigning hardware to change. Microprogrammed control stores microinstructions in a ROM/RAM (control store) — easier to modify/extend but slower due to the extra memory access.'},
+    {tag:'CA·11',q:'A 5-stage pipeline processes 100 instructions with each stage taking 10 ns. What is the total execution time?',opts:['500 ns','1040 ns','5000 ns','1000 ns'],ans:1,exp:'T_pipeline = (k + n − 1) × t = (5 + 100 − 1) × 10 = 104 × 10 = 1040 ns. Sequential time = 100 × 5 × 10 = 5000 ns. Speedup = 5000/1040 ≈ 4.81×.'},
+    {tag:'CA·11',q:'Cache hit ratio is 0.9, cache access time is 20 ns, main memory access time is 200 ns. What is the average access time?',opts:['20 ns','38 ns','200 ns','110 ns'],ans:1,exp:'T_avg = h×T_cache + (1−h)×T_main = 0.9×20 + 0.1×200 = 18 + 20 = 38 ns.'},
+    {tag:'CA·12',q:'Belady\'s Anomaly (more frames causing more page faults) can occur with which page replacement algorithm?',opts:['LRU','Optimal (MIN)','FIFO','Both LRU and FIFO'],ans:2,exp:'Belady\'s Anomaly affects only FIFO. LRU and Optimal are "stack algorithms" that guarantee more frames will never increase page faults. FIFO can counterintuitively give more faults with more frames on certain reference strings.'},
+    {tag:'CA·16',q:'According to Amdahl\'s Law, if 80% of a program can be parallelized and 4 processors are available, the speedup is:',opts:['4×','3.2×','2.5×','2×'],ans:2,exp:'Speedup = 1 / ((1−P) + P/N) = 1 / (0.2 + 0.8/4) = 1 / (0.2 + 0.2) = 1/0.4 = 2.5×. With infinite processors the ceiling is 1/(1−0.8) = 5×.'}
+  ];
+
+  /* ------------------------------------------------------------------ */
+  /* ROUTING                                                              */
+  /* ------------------------------------------------------------------ */
+  var ORDER = ['home','dl-01','dl-02','dl-03','dl-04','dl-05','dl-06','dl-07','ca-08','ca-09','ca-10','ca-11','ca-12','ca-13','ca-14','ca-15','ca-16','ref-17','quiz'];
+  var TITLES = {
+    'home':'Home / How to use',
+    'dl-01':'Number Systems & Representation',
+    'dl-02':'Boolean Algebra & Logic Gates',
+    'dl-03':'K-Maps & Minimization',
+    'dl-04':'Combinational Circuits',
+    'dl-05':'Sequential Circuits',
+    'dl-06':'Registers & Counters',
+    'dl-07':'Computer Arithmetic',
+    'ca-08':'CPU Organization',
+    'ca-09':'Instruction Formats & Addressing',
+    'ca-10':'Control Unit Design',
+    'ca-11':'Memory Hierarchy & Cache',
+    'ca-12':'Virtual Memory',
+    'ca-13':'I/O Organization',
+    'ca-14':'Pipelining & Hazards',
+    'ca-15':'RISC vs CISC',
+    'ca-16':'Parallel Processing',
+    'ref-17':'Formula & Fact Sheet',
+    'quiz':'Practice Questions'
+  };
+  var TRACKED = ORDER.filter(function(id){
+    return id.indexOf('-') > -1 && id !== 'ref-17';
+  });
+
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  var menuBtn = document.getElementById('menuBtn');
+
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('show');
+  }
+  menuBtn.addEventListener('click', function(){
+    sidebar.classList.toggle('open');
+    backdrop.classList.toggle('show');
+  });
+  backdrop.addEventListener('click', closeSidebar);
+
+  function showSection(id){
+    if(!TITLES.hasOwnProperty(id)) return;
+    var sections = document.querySelectorAll('.sheet');
+    for(var i=0;i<sections.length;i++){ sections[i].classList.remove('active'); }
+    var target = document.getElementById(id);
+    if(target){ target.classList.add('active'); }
+    var links = document.querySelectorAll('.nav-link');
+    for(var j=0;j<links.length;j++){
+      links[j].classList.toggle('active', links[j].getAttribute('data-target') === id);
+    }
+    buildSheetNav(target, id);
+    document.getElementById('content').scrollTop = 0;
+    window.scrollTo(0,0);
+    closeSidebar();
+    if(id === 'quiz'){ initQuiz(); }
+  }
+
+  function buildSheetNav(target, id){
+    if(!target) return;
+    var nav = target.querySelector('.sheet-nav');
+    if(!nav) return;
+    var idx = ORDER.indexOf(id);
+    var prevBtn = nav.querySelector('.prev-btn');
+    var nextBtn = nav.querySelector('.next-btn');
+    if(prevBtn){
+      if(idx > 0){
+        var pid = ORDER[idx-1];
+        prevBtn.innerHTML = '<span class="dir">&larr; Previous</span><span>'+TITLES[pid]+'</span>';
+        prevBtn.disabled = false;
+        prevBtn.onclick = function(){ showSection(pid); };
+      } else { prevBtn.innerHTML=''; prevBtn.disabled=true; }
+    }
+    if(nextBtn){
+      if(idx < ORDER.length-1 && idx !== -1){
+        var nid = ORDER[idx+1];
+        nextBtn.innerHTML = '<span class="dir">Next &rarr;</span><span>'+TITLES[nid]+'</span>';
+        nextBtn.disabled = false;
+        nextBtn.onclick = function(){ showSection(nid); };
+      } else { nextBtn.innerHTML=''; nextBtn.disabled=true; }
+    }
+  }
+
+  var navLinks = document.querySelectorAll('.nav-link');
+  for(var k=0;k<navLinks.length;k++){
+    navLinks[k].addEventListener('click', function(e){
+      e.preventDefault();
+      showSection(this.getAttribute('data-target'));
+    });
+  }
+
+  var mapItems = document.querySelectorAll('.map-card li');
+  for(var m=0;m<mapItems.length;m++){
+    mapItems[m].addEventListener('click', function(){
+      showSection(this.getAttribute('data-target'));
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* PROGRESS TRACKING                                                    */
+  /* ------------------------------------------------------------------ */
+  var PROGRESS_KEY = 'dl-ca-progress-v2';
+  var progressState = {};
+
+  function renderProgress(){
+    var checks = document.querySelectorAll('.nav-check');
+    var doneCount = 0;
+    for(var i=0;i<checks.length;i++){
+      var cid = checks[i].getAttribute('data-check');
+      var on = !!progressState[cid];
+      checks[i].classList.toggle('done', on);
+      if(on) doneCount++;
+    }
+    var fill = document.getElementById('progressFill');
+    var text = document.getElementById('progressText');
+    if(fill){ fill.style.width = (doneCount/TRACKED.length*100)+'%'; }
+    if(text){ text.textContent = doneCount+' / '+TRACKED.length+' sheets reviewed'; }
+  }
+
+  async function loadProgress(){
+    try{
+      var res = await window.storage.get(PROGRESS_KEY);
+      if(res && res.value){ progressState = JSON.parse(res.value); }
+    }catch(e){ progressState={}; }
+    renderProgress();
+  }
+
+  async function saveProgress(){
+    try{ await window.storage.set(PROGRESS_KEY, JSON.stringify(progressState)); }catch(e){}
+  }
+
+  var checkEls = document.querySelectorAll('.nav-check');
+  for(var c=0;c<checkEls.length;c++){
+    checkEls[c].addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      var cid = this.getAttribute('data-check');
+      progressState[cid] = !progressState[cid];
+      renderProgress(); saveProgress();
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* QUIZ ENGINE                                                          */
+  /* ------------------------------------------------------------------ */
+  var quizState = { current:0, correct:0, wrong:0, answered:false, shuffled:[] };
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j=Math.floor(Math.random()*(i+1));
+      var t=a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a;
+  }
+
+  function initQuiz(){
+    quizState.shuffled = shuffle(QUESTIONS);
+    quizState.current = 0;
+    quizState.correct = 0;
+    quizState.wrong = 0;
+    quizState.answered = false;
+    document.getElementById('quizScore').classList.remove('show');
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    var body = document.getElementById('quizBody');
+    var fill = document.getElementById('quizFill');
+    var counter = document.getElementById('quizCounter');
+    var total = quizState.shuffled.length;
+    var ci = quizState.current;
+    if(ci >= total){ showScore(); return; }
+    var q = quizState.shuffled[ci];
+    fill.style.width = (ci/total*100)+'%';
+    counter.textContent = 'Q '+(ci+1)+' / '+total;
+    quizState.answered = false;
+
+    var keys = ['A','B','C','D'];
+    var optsHtml = q.opts.map(function(opt,i){
+      return '<button class="quiz-opt" data-idx="'+i+'"><span class="opt-key">'+keys[i]+'</span><span>'+opt+'</span></button>';
+    }).join('');
+
+    body.innerHTML =
+      '<div class="quiz-card">'+
+        '<div class="q-tag">'+q.tag+'</div>'+
+        '<div class="q-text">'+q.q+'</div>'+
+        '<div class="quiz-options">'+optsHtml+'</div>'+
+        '<div class="quiz-explanation" id="quizExp"><strong>Explanation:</strong> '+q.exp+'</div>'+
+      '</div>'+
+      '<div class="quiz-actions">'+
+        '<button class="btn btn-primary" id="quizNext" style="display:none">Next Question &rarr;</button>'+
+      '</div>';
+
+    var optBtns = body.querySelectorAll('.quiz-opt');
+    for(var i=0;i<optBtns.length;i++){
+      optBtns[i].addEventListener('click', (function(btn, idx){
+        return function(){
+          if(quizState.answered) return;
+          quizState.answered = true;
+          var allBtns = body.querySelectorAll('.quiz-opt');
+          for(var j=0;j<allBtns.length;j++){ allBtns[j].disabled = true; }
+          if(idx === q.ans){
+            btn.classList.add('correct');
+            quizState.correct++;
+          } else {
+            btn.classList.add('wrong');
+            allBtns[q.ans].classList.add('correct');
+            quizState.wrong++;
+          }
+          document.getElementById('quizExp').classList.add('show');
+          var nextBtn = document.getElementById('quizNext');
+          if(nextBtn){
+            nextBtn.style.display = 'inline-flex';
+            nextBtn.addEventListener('click', function(){
+              quizState.current++;
+              renderQuestion();
+            });
+          }
+        };
+      })(optBtns[i], parseInt(optBtns[i].getAttribute('data-idx'))));
+    }
+  }
+
+  function showScore(){
+    document.getElementById('quizBody').innerHTML = '';
+    document.getElementById('quizFill').style.width = '100%';
+    var total = quizState.shuffled.length;
+    var pct = Math.round(quizState.correct/total*100);
+    var scoreCard = document.getElementById('quizScore');
+    document.getElementById('scoreRing').textContent = pct+'%';
+    document.getElementById('scoreCorrect').textContent = quizState.correct;
+    document.getElementById('scoreWrong').textContent = quizState.wrong;
+    document.getElementById('scoreTotal').textContent = total;
+    var title = pct>=80 ? '🏆 Excellent!' : pct>=60 ? '👍 Good Work!' : '📖 Keep Revising';
+    var msg = pct>=80
+      ? 'Outstanding performance! You\'re well-prepared for this section.'
+      : pct>=60
+      ? 'Solid foundation. Review the highlighted sheets and retake to improve.'
+      : 'Go back through the content sheets and retry — focus on the Exam Focus callouts.';
+    document.getElementById('scoreTitle').textContent = title;
+    document.getElementById('scoreMsg').textContent = msg;
+    scoreCard.classList.add('show');
+    document.getElementById('quizCounter').textContent = 'Complete';
+    document.getElementById('quizRetry').addEventListener('click', initQuiz);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* BOOT                                                                 */
+  /* ------------------------------------------------------------------ */
+  showSection('home');
+  loadProgress();
+})();
+</script>
+</body>
+</html>
